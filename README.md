@@ -116,3 +116,30 @@ const htmlStr = unified()
   .processSync(mrkStr)
   .toString()
 ```
+
+Output: 
+
+```html
+<p>
+  <a href="https://github.com" rel="external">github</a>
+  <!--rehype:rel=external-->
+</p>
+```
+
+## Options
+
+#### `properties`
+
+> Default Value: `data`  
+> Value: `data`, `string`, `attr`
+
+## Related
+
+- [`remark-parse`](https://www.npmjs.com/package/remark-parse) remark plugin to parse Markdown
+- [`remark-rehype`](https://www.npmjs.com/package/remark-rehype) remark plugin to transform to rehype
+- [`rehype-raw`](https://www.npmjs.com/package/rehype-raw) rehype plugin to reparse the tree (and raw nodes)
+- [`rehype-stringify`](https://www.npmjs.com/package/rehype-stringify) rehype plugin to serialize HTML
+
+## License
+
+MIT © [Kenny Wong](https://github.com/jaywcjlove)
