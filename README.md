@@ -36,6 +36,7 @@ This is a title
 <!--rehype:style=color:pink;-->
 ```
 
+> Output:
 > ```html
 > <h1 style="color:pink;">This is a title</h1>
 > ```
@@ -45,6 +46,7 @@ This is a title
 <!--rehype:style=color:pink;-->
 ```
 
+> Output:
 > ```html
 > <h1 style="color:pink;">This is a title</h1>
 > ```
@@ -55,9 +57,10 @@ This is a title
 This is a **Unicorn**<!--rehype:style=color: grey-->
 ```
 
-```html
-<p>This is a <strong style="color: grey">Unicorn</strong> <!--rehype:style=color: grey--></p>
-```
+> Output:
+> ```html
+> <p>This is a <strong style="color: grey">Unicorn</strong> <!--rehype:style=color: grey--></p>
+> ```
 
 ### `Emphasis`
 
@@ -65,11 +68,11 @@ This is a **Unicorn**<!--rehype:style=color: grey-->
 Npm stand for *node* <!--rehype:style=color: red--> packet manager.
 ```
 
-Output:
-
-```html
-<p>This is a <strong style="color: grey">Unicorn</strong> <!--rehype:style=color: grey--></p>
-```
+> Output:
+> 
+> ```html
+> <p>This is a <strong style="color: grey">Unicorn</strong> <!--rehype:style=color: grey--></p>
+> ```
 
 ### `Inlne Code`
 
@@ -77,11 +80,11 @@ Output:
 This is the `content`<!--rehype:style=color:pink;-->
 ```
 
-Output:
-
-```html
-<p>This is the <code style="color:pink;">content</code><!--rehype:style=color:pink;--></p>
-```
+> Output:
+> 
+> ```html
+> <p>This is the <code style="color:pink;">content</code><!--rehype:style=color:pink;--></p>
+> ```
 
 ### `List`
 
@@ -90,14 +93,14 @@ Output:
 <!--rehype:style=width:100px;-->
 ```
 
-Output:
-
-```html
-<ul style="width:100px;">
-  <li>list</li>
-</ul>
-<!--rehype:style=width:100px;-->
-```
+> Output:
+> 
+> ```html
+> <ul style="width:100px;">
+>   <li>list</li>
+> </ul>
+> <!--rehype:style=width:100px;-->
+> ```
 
 ## Usage
 
