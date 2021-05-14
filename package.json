@@ -3,6 +3,7 @@
   "version": "1.1.1",
   "description": "New syntax to add attributes to Markdown.",
   "author": "Kenny Wong <wowohoo@qq.com>",
+  "main": "lib/index.js",
   "scripts": {
     "start": "node lib/index.js",
     "watch": "npm run watch:ts",
