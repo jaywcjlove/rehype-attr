@@ -60,6 +60,7 @@ const rehypeAttrs: Plugin<[RehypeAttrsOptions?]> = (options): MdastTransformer =
       if (node.tagName === 'pre' && codeNode && codeNode.tagName === 'code' && Array.isArray(parent.children) && parent.children.length > 1) {
         const attr = getComment(parent.children, index, true)
         if (Object.keys(attr).length > 0) {
+          node.properties = { ...(node.properties as any), ...{ 'data-type': 'rehyp' } }
           codeNode.properties = propertiesHandle(codeNode.properties, attr, opts.properties)
         }
       }

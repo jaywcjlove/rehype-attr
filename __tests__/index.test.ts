@@ -11,7 +11,7 @@ const mrkStr = "<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
 
 describe('rehype-attr test case', () => {
   it('default options="data"', async () => {
-    const expected = `<!--rehype:title=Rehype Attrs-->\n<pre><code class="language-js" data-config="[object Object]">console.log('')\n</code></pre>`
+    const expected = `<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" data-config="[object Object]">console.log('')\n</code></pre>`
     const htmlStr = unified()
       .use(remarkParse)
       .use(remark2rehype, { allowDangerousHtml: true })
@@ -23,7 +23,7 @@ describe('rehype-attr test case', () => {
       expect(htmlStr).toEqual(expected);
   });
   it('options="string"', async () => {
-    const expected = `<!--rehype:title=Rehype Attrs-->\n<pre><code class="language-js" data-config="{&#x22;title&#x22;:&#x22;Rehype Attrs&#x22;,&#x22;rehyp&#x22;:true}">console.log('')\n</code></pre>`
+    const expected = `<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" data-config="{&#x22;title&#x22;:&#x22;Rehype Attrs&#x22;,&#x22;rehyp&#x22;:true}">console.log('')\n</code></pre>`
     const htmlStr = unified()
       .use(remarkParse)
       .use(remark2rehype, { allowDangerousHtml: true })
@@ -37,7 +37,7 @@ describe('rehype-attr test case', () => {
 
   it('options="string" - Multiple value settings', async () => {
     const markdown = "<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```\n\n```js\nconsole.log('')\n```\n<!--rehype:title=Rehype Attrs Sub-->\n```js\nconsole.log('')\n```\n"
-    const expected = `<!--rehype:title=Rehype Attrs-->\n<pre><code class="language-js" data-config="{&#x22;title&#x22;:&#x22;Rehype Attrs&#x22;,&#x22;rehyp&#x22;:true}">console.log('')\n</code></pre>\n<pre><code class="language-js">console.log('')\n</code></pre>\n<!--rehype:title=Rehype Attrs Sub-->\n<pre><code class="language-js" data-config="{&#x22;title&#x22;:&#x22;Rehype Attrs Sub&#x22;,&#x22;rehyp&#x22;:true}">console.log('')\n</code></pre>`
+    const expected = `<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" data-config="{&#x22;title&#x22;:&#x22;Rehype Attrs&#x22;,&#x22;rehyp&#x22;:true}">console.log('')\n</code></pre>\n<pre><code class="language-js">console.log('')\n</code></pre>\n<!--rehype:title=Rehype Attrs Sub-->\n<pre data-type="rehyp"><code class="language-js" data-config="{&#x22;title&#x22;:&#x22;Rehype Attrs Sub&#x22;,&#x22;rehyp&#x22;:true}">console.log('')\n</code></pre>`
     const htmlStr = unified()
       .use(remarkParse)
       .use(remark2rehype, { allowDangerousHtml: true })
@@ -53,7 +53,7 @@ describe('rehype-attr test case', () => {
     {
       title: 'options="attr" - Code',
       markdown: '<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log("")\n```',
-      expected: '<!--rehype:title=Rehype Attrs-->\n<pre><code class="language-js" title="Rehype Attrs">console.log("")\n</code></pre>',
+      expected: '<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log("")\n</code></pre>',
     },
     {
       title: 'options="attr" - Emphasis <strong>',
