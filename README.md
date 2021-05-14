@@ -1,0 +1,118 @@
+rehype-attr
+---
+
+New syntax to add attributes to Markdown. rehype-attr like [`remark-attr`](https://github.com/arobase-che/remark-attr)
+
+## Default Syntax
+
+### `Code`
+
+```markdown
+<!--rehype:title=Rehype Attrs-->
+\```js
+console.log('')
+\```
+```
+
+### `Links`
+
+```markdown
+[github](https://github.com)<!--rehype:rel=external-->
+```
+
+### `Header`
+
+```markdown
+This is a title
+====
+<!--rehype:style=color:pink;-->
+```
+
+> ```html
+> <h1 style="color:pink;">This is a title</h1>
+> ```
+
+```markdown
+# This is a title
+<!--rehype:style=color:pink;-->
+```
+
+> ```html
+> <h1 style="color:pink;">This is a title</h1>
+> ```
+
+### `Strong`
+
+```markdown
+This is a **Unicorn**<!--rehype:style=color: grey-->
+```
+
+```html
+<p>This is a <strong style="color: grey">Unicorn</strong> <!--rehype:style=color: grey--></p>
+```
+
+### `Emphasis`
+
+```markdown
+Npm stand for *node* <!--rehype:style=color: red--> packet manager.
+```
+
+Output:
+
+```html
+<p>This is a <strong style="color: grey">Unicorn</strong> <!--rehype:style=color: grey--></p>
+```
+
+### `Inlne Code`
+
+```markdown
+This is the `content`<!--rehype:style=color:pink;-->
+```
+
+Output:
+
+```html
+<p>This is the <code style="color:pink;">content</code><!--rehype:style=color:pink;--></p>
+```
+
+### `List`
+
+```markdown
+- list
+<!--rehype:style=width:100px;-->
+```
+
+Output:
+
+```html
+<ul style="width:100px;">
+  <li>list</li>
+</ul>
+<!--rehype:style=width:100px;-->
+```
+
+## Usage
+
+```bash
+npm i rehype-attr
+yarn add rehype-attr
+```
+
+```js
+const unified = require("unified");
+const stringify = require('rehype-stringify')
+const rehypeRaw = require('rehype-raw')
+const remarkParse = require('remark-parse')
+const remark2rehype = require('remark-rehype')
+const rehypeAttrs = require('rehype-attr')
+
+const mrkStr = `[github](https://github.com)<!--rehype:rel=external-->`
+const htmlStr = unified()
+  .use(remarkParse)
+  .use(remark2rehype, { allowDangerousHtml: true })
+  .use(rehypeRaw)
+  .use(rehypeAttrs, { properties: 'attr' })
+  .use(stringify)
+  .processSync(mrkStr)
+  .toString()
+```

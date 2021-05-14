@@ -1,0 +1,39 @@
+{
+  "name": "rehype-attr",
+  "version": "1.1.0",
+  "description": "New syntax to add attributes to Markdown.",
+  "author": "Kenny Wong <wowohoo@qq.com>",
+  "scripts": {
+    "start": "node lib/index.js",
+    "watch": "npm run watch:ts",
+    "watch:ts": "tsbb watch & npm run build:types -- --watch",
+    "build": "npm run build:ts && npm run build:types",
+    "build:ts": "tsbb build",
+    "build:types": "tsbb types",
+    "test": "tsbb test",
+    "coverage": "tsbb test --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaywcjlove/rehype-attr"
+  },
+  "files": [
+    "lib"
+  ],
+  "keywords": [],
+  "license": "MIT",
+  "dependencies": {
+    "ts-mdast": "^1.0.0",
+    "unist-util-visit": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "26.0.23",
+    "jest": "^26.6.3",
+    "rehype-stringify": "8.0.0",
+    "rehype-raw": "5.1.0",
+    "remark-parse": "9.0.0",
+    "remark-rehype": "8.1.0",
+    "tsbb": "2.1.2",
+    "unified": "9.2.1"
+  }
+}
