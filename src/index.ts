@@ -1,4 +1,5 @@
 import { Root, Parent } from 'ts-mdast'
+import {Plugin} from 'unified'
 import visit from './visit'
 import { getComment, propertiesHandle } from './utils'
 
@@ -50,7 +51,7 @@ const defaultOptions: RehypeAttrsOptions = {
   properties: 'data'
 }
 
-export default function rehypeAttrs(options: RehypeAttrsOptions): MdastTransformer {
+const rehypeAttrs: Plugin<[RehypeAttrsOptions?]> = (options): MdastTransformer =>{
   const opts = { ...defaultOptions, ...options }
   return transformer
   function transformer(tree: Root) {
@@ -71,3 +72,6 @@ export default function rehypeAttrs(options: RehypeAttrsOptions): MdastTransform
     })
   }
 }
+
+
+export default rehypeAttrs
