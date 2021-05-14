@@ -32,12 +32,12 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "ts-mdast": "^1.0.0",
-    "unist-util-visit": "^3.1.0"
+    "ts-mdast": "1.0.0",
+    "unist-util-visit": "3.1.0"
   },
   "devDependencies": {
     "@types/jest": "26.0.23",
-    "jest": "^26.6.3",
+    "jest": "26.6.3",
     "rehype-stringify": "8.0.0",
     "rehype-raw": "5.1.0",
     "remark-parse": "9.0.0",
