@@ -20,10 +20,7 @@ export const getComment = (data: any[] = [], index: number, isCode = false): Rec
     let text = false
     do {
       i--
-      if (data[i].value.replace(/(\n|\s)/g, '') !== '') {
-        text = true
-      }
-      if (/^(comment)/.test(data[i].type)) {
+      if ((data[i].value && data[i].value.replace(/(\n|\s)/g, '') !== '') || data[i].type !== 'text') {
         text = true
       }
     } while (i > -1 && !text)
