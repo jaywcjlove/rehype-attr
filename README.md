@@ -20,6 +20,14 @@ console.log('')
 [github](https://github.com)<!--rehype:rel=external-->
 ```
 
+> Output:
+> ```html
+> <p>
+>   <a href="https://github.com" rel="external">github</a>
+>   <!--rehype:rel=external-->
+> </p>
+> ```
+
 ### `Header`
 
 ```markdown
