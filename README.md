@@ -1,7 +1,7 @@
 rehype-attr
 ---
 
-New syntax to add attributes to Markdown. rehype-attr like [`remark-attr`](https://github.com/arobase-che/remark-attr)
+New syntax to add attributes to Markdown. `rehype-attr` like [`remark-attr`](https://github.com/arobase-che/remark-attr)
 
 ## Default Syntax
 
