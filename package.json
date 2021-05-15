@@ -3,6 +3,7 @@
   "version": "1.1.6",
   "description": "New syntax to add attributes to Markdown.",
   "author": "Kenny Wong <wowohoo@qq.com>",
+  "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
     "prepack": "npm run build",
@@ -31,7 +32,9 @@
     "ast",
     "unified"
   ],
-  "license": "MIT",
+  "jest": {
+    "collectCoverageFrom": ["lib/*.js", "!lib/*.d.ts"]
+  },
   "dependencies": {
     "ts-mdast": "1.0.0",
     "unified": "9.2.1"

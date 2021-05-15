@@ -124,7 +124,18 @@ describe('rehype-attr test case', () => {
       title: 'options="attr" - <ul> `- list`',
       markdown: '- list \n<!--rehype:style=width:100px;-->',
       expected: '<ul style="width:100px;">\n<li>list</li>\n</ul>\n<!--rehype:style=width:100px;-->',
-    }
+    },
+
+    {
+      title: 'options="attr" - test parameter value type ',
+      markdown: '#### This is a title\n<!--rehype:data-bool=true&data-bool2=false&data-num=213&data-num1=0213&data-str=2s13-->',
+      expected: '<h4 data-bool data-num="213" data-num1="0213" data-str="2s13">This is a title</h4>\n<!--rehype:data-bool=true&data-bool2=false&data-num=213&data-num1=0213&data-str=2s13-->',
+    },
+    {
+      title: 'options="attr" - test identifier',
+      markdown: '#### This is a title\n<!--wwww:data-bool=true',
+      expected: '<h4>This is a title</h4>\n',
+    },
   ].forEach((data, idx) => {
     it(data.title, async () => {
       const htmlStr = unified()
