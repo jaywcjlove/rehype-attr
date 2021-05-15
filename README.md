@@ -150,6 +150,7 @@ Output:
 
 ## Related
 
+- [`rehypejs`](https://github.com/rehypejs/rehype) HTML processor powered by plugins part of the @unifiedjs collective
 - [`remark-parse`](https://www.npmjs.com/package/remark-parse) remark plugin to parse Markdown
 - [`remark-rehype`](https://www.npmjs.com/package/remark-rehype) remark plugin to transform to rehype
 - [`rehype-raw`](https://www.npmjs.com/package/rehype-raw) rehype plugin to reparse the tree (and raw nodes)
