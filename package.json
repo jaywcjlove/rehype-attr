@@ -45,7 +45,7 @@
   "devDependencies": {
     "@types/jest": "26.0.23",
     "jest": "26.6.3",
-    "rehype": "^11.0.0",
+    "rehype": "11.0.0",
     "rehype-raw": "5.1.0",
     "rehype-stringify": "8.0.0",
     "remark-parse": "9.0.0",
