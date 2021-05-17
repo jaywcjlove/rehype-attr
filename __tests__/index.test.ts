@@ -4,6 +4,7 @@ const unified = require("unified");
 const stringify = require('rehype-stringify')
 const rehypeRaw = require('rehype-raw')
 const remarkParse = require('remark-parse')
+const gfm = require('remark-gfm')
 const remark2rehype = require('remark-rehype')
 const rehypeAttrs = require('../lib')
 
@@ -140,6 +141,27 @@ describe('rehype-attr test case', () => {
     it(data.title, async () => {
       const htmlStr = unified()
         .use(remarkParse)
+        .use(remark2rehype, { allowDangerousHtml: true })
+        .use(rehypeRaw)
+        .use(rehypeAttrs, { properties: 'attr' })
+        .use(stringify)
+        .processSync(data.markdown)
+        .toString()
+        expect(htmlStr).toEqual(data.expected);
+    });
+  });
+
+  [
+    {
+      title: 'options="attr" - Delete <del> `~~Text~~`',
+      markdown: 'This is a ~~title~~<!--rehype:style=color:pink;-->',
+      expected: '<p>This is a <del style="color:pink;">title</del><!--rehype:style=color:pink;--></p>',
+    }
+  ].forEach((data, idx) => {
+    it(data.title, async () => {
+      const htmlStr = unified()
+        .use(remarkParse)
+        .use(gfm)
         .use(remark2rehype, { allowDangerousHtml: true })
         .use(rehypeRaw)
         .use(rehypeAttrs, { properties: 'attr' })
