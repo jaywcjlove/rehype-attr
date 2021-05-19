@@ -14,12 +14,12 @@ New syntax to add attributes to Markdown. `rehype-attr` like [`remark-attr`](htt
 ###### `HTML Example`
 
 ```html
-<a href="https://github.com">github</a><!--rehype:rel=external-->
+<a href="https://github.com">github</a><!--rehype:rel=external&style=color:pink;&data-name=kenny-->
 ```
 
 > Output: 
 > ```html
-> <a href="https://github.com" rel="external">github</a>
+> <a href="https://github.com" rel="external" style="color:pink;" data-name="kenny">github</a>
 > ```
 
 <details>
