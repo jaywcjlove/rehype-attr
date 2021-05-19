@@ -64,7 +64,7 @@ const rehypeAttrs: Plugin<[RehypeAttrsOptions?]> = (options): MdastTransformer =
           codeNode.properties = propertiesHandle(codeNode.properties, attr, opts.properties)
         }
       }
-      if (/^(em|strong|a|p|h1|h(2|3|4|5|6)|code|img|del|ul)$/.test(node.tagName as string)) {
+      if (/^(em|strong|b|a|i|p|blockquote|h(1|2|3|4|5|6)|code|img|del|ul|ol)$/.test(node.tagName as string)) {
         const attr = getComment(parent.children, index)
         if (Object.keys(attr).length > 0) {
           node.properties = propertiesHandle(node.properties as any, attr, opts.properties)

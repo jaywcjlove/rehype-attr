@@ -181,6 +181,16 @@ describe('rehype-attr test case', () => {
       expected: '<p id="text">text</p><!--rehype:id=text-->',
     },
     {
+      title: 'options="attr" - <b>',
+      markdown: '<b>Title</b><!--rehype:style=color:pink;&data-name=kenny-->',
+      expected: '<b style="color:pink;" data-name="kenny">Title</b><!--rehype:style=color:pink;&data-name=kenny-->',
+    },
+    {
+      title: 'options="attr" - <i>',
+      markdown: '<i>Title</i><!--rehype:style=color:pink;-->',
+      expected: '<i style="color:pink;">Title</i><!--rehype:style=color:pink;-->',
+    },
+    {
       title: 'options="attr" - <strong>',
       markdown: 'This is a <strong>Unicorn</strong><!--rehype:style=color: grey-->',
       expected: 'This is a <strong style="color: grey">Unicorn</strong><!--rehype:style=color: grey-->',
@@ -189,6 +199,16 @@ describe('rehype-attr test case', () => {
       title: 'options="attr" - <code>',
       markdown: 'This is the <code>content</code><!--rehype:style=color:pink;-->',
       expected: 'This is the <code style="color:pink;">content</code><!--rehype:style=color:pink;-->',
+    },
+    {
+      title: 'options="attr" - <blockquote>',
+      markdown: '<blockquote>content</blockquote><!--rehype:style=color:pink;-->',
+      expected: '<blockquote style="color:pink;">content</blockquote><!--rehype:style=color:pink;-->',
+    },
+    {
+      title: 'options="attr" - <ol>',
+      markdown: '<ol><li>Red</li><li>Green</li></ol><!--rehype:style=color:pink;-->',
+      expected: '<ol style="color:pink;"><li>Red</li><li>Green</li></ol><!--rehype:style=color:pink;-->',
     },
     {
       title: 'options="attr" - <a>',
