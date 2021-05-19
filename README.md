@@ -9,15 +9,6 @@ New syntax to add attributes to Markdown. `rehype-attr` like [`remark-attr`](htt
 
 ## Default Syntax
 
-### `Code`
-
-```markdown
-<!--rehype:title=Rehype Attrs&abc=1&hello=2-->
-\```js
-console.log('')
-\```
-```
-
 ### `Links`
 
 ###### `HTML Example`
@@ -188,10 +179,42 @@ Npm stand for *node* <!--rehype:style=color: red--> packet manager.
 > <p>Npm stand for <em style="color: red">node</em><!--rehype:style=color: red--> packet manager.</p>
 > ```
 
-### `Inlne Code`
+### `Code`
 
 ```markdown
-This is the `content`<!--rehype:style=color:pink;-->
+<!--rehype:title=Rehype Attrs&abc=1&hello=2-->
+\```js
+console.log('')
+\```
+```
+
+> Output:
+> 
+> ```html
+> <pre data-type="rehyp">
+>   <code class="language-js" data-config="[object Object]">
+>     console.log('')
+>   </code>
+> </pre>
+> ```
+
+### `Inlne Code`
+
+###### `HTML Example`
+
+```html
+This is the <code style="color:pink;">content</code><!--rehype:style=color:pink;-->
+```
+
+> Output: 
+> ```html
+> Npm stand for <em style="color: red">node</em> packet manager.
+> ```
+
+###### `Markdown Example`
+
+```markdown
+This is the <code style="color:pink;">content</code>
 ```
 
 > Output:
