@@ -12,7 +12,7 @@ New syntax to add attributes to Markdown. `rehype-attr` like [`remark-attr`](htt
 ### `Code`
 
 ```markdown
-<!--rehype:title=Rehype Attrs-->
+<!--rehype:title=Rehype Attrs&abc=1&hello=2-->
 \```js
 console.log('')
 \```
