@@ -1,11 +1,12 @@
 /// <reference types="jest" />
 
 const unified = require("unified");
+const rehype = require('rehype')
 const stringify = require('rehype-stringify')
 const rehypeRaw = require('rehype-raw')
+const remark2rehype = require('remark-rehype')
 const remarkParse = require('remark-parse')
 const gfm = require('remark-gfm')
-const remark2rehype = require('remark-rehype')
 const rehypeAttrs = require('../lib')
 
 const mrkStr = "<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
@@ -57,7 +58,7 @@ describe('rehype-attr test case', () => {
       expected: '<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log("")\n</code></pre>',
     },
     {
-      title: 'options="attr" - Emphasis <strong>',
+      title: 'options="attr" - Emphasis <em>',
       markdown: 'Npm stand for *node*<!--rehype:style=color: red--> packet manager.',
       expected: '<p>Npm stand for <em style="color: red">node</em><!--rehype:style=color: red--> packet manager.</p>',
     },
@@ -166,6 +167,29 @@ describe('rehype-attr test case', () => {
         .use(rehypeRaw)
         .use(rehypeAttrs, { properties: 'attr' })
         .use(stringify)
+        .processSync(data.markdown)
+        .toString()
+        expect(htmlStr).toEqual(data.expected);
+    });
+  });
+
+
+  [
+    {
+      title: 'options="attr" - <p>',
+      markdown: '<p>text</p><!--rehype:id=text-->',
+      expected: '<p id="text">text</p><!--rehype:id=text-->',
+    },
+    {
+      title: 'options="attr" - <strong>',
+      markdown: 'This is a <strong>Unicorn</strong><!--rehype:style=color: grey-->',
+      expected: 'This is a <strong style="color: grey">Unicorn</strong><!--rehype:style=color: grey-->',
+    }
+  ].forEach((data, idx) => {
+    it(data.title, async () => {
+      const htmlStr = rehype()
+        .data('settings', { fragment: true })
+        .use(rehypeAttrs, { properties: 'attr' })
         .processSync(data.markdown)
         .toString()
         expect(htmlStr).toEqual(data.expected);
