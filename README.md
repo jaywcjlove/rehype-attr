@@ -20,6 +20,8 @@ console.log('')
 
 ### `Links`
 
+###### `HTML Example`
+
 ```html
 <a href="https://github.com">github</a><!--rehype:rel=external-->
 ```
@@ -45,7 +47,7 @@ const htmlStr = rehype()
 
 </details>
 
-<br />
+###### `Markdown Example`
 
 ```markdown
 [github](https://github.com)<!--rehype:rel=external-->
@@ -87,7 +89,7 @@ const htmlStr = unified()
 
 ### `Header`
 
-#### `HTML Example`
+###### `HTML Example`
 
 ```html
 <h1>This is a title</h1><!--rehype:style=color:pink;-->
@@ -114,7 +116,7 @@ const htmlStr = rehype()
 
 </details>
 
-#### `Markdown Example`
+###### `Markdown Example`
 
 ```markdown
 This is a title
@@ -139,7 +141,7 @@ This is a title
 
 ### `Strong`
 
-#### `HTML Example`
+###### `HTML Example`
 
 ```html
 This is a <strong>Unicorn</strong><!--rehype:style=color: grey-->
@@ -150,7 +152,7 @@ This is a <strong>Unicorn</strong><!--rehype:style=color: grey-->
 > This is a <strong style="color: grey">Unicorn</strong>
 > ```
 
-#### `Markdown Example`
+###### `Markdown Example`
 
 ```markdown
 This is a **Unicorn**<!--rehype:style=color: grey-->
@@ -163,7 +165,7 @@ This is a **Unicorn**<!--rehype:style=color: grey-->
 
 ### `Emphasis`
 
-#### `HTML Example`
+###### `HTML Example`
 
 ```html
 Npm stand for <em>node</em><!--rehype:style=color: red--> packet manager.
@@ -174,7 +176,7 @@ Npm stand for <em>node</em><!--rehype:style=color: red--> packet manager.
 > Npm stand for <em style="color: red">node</em> packet manager.
 > ```
 
-#### `Markdown Example`
+###### `Markdown Example`
 
 ```markdown
 Npm stand for *node* <!--rehype:style=color: red--> packet manager.
@@ -221,7 +223,7 @@ npm i rehype-attr
 yarn add rehype-attr
 ```
 
-### `HTML Example`
+###### `HTML Example`
 
 ```js
 const rehype = require('rehype')
@@ -239,7 +241,7 @@ Output:
 <h1 style="color:pink;">This is a title</h1>
 ```
 
-### `Markdown Example`
+###### `Markdown Example`
 
 ```js
 const unified = require("unified");
