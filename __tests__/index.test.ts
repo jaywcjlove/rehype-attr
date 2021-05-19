@@ -189,6 +189,11 @@ describe('rehype-attr test case', () => {
       title: 'options="attr" - <code>',
       markdown: 'This is the <code>content</code><!--rehype:style=color:pink;-->',
       expected: 'This is the <code style="color:pink;">content</code><!--rehype:style=color:pink;-->',
+    },
+    {
+      title: 'options="attr" - <a>',
+      markdown: '<a href="https://github.com">github</a><!--rehype:rel=external&style=color:pink;&data-name=kenny-->',
+      expected: '<a href="https://github.com" rel="external" style="color:pink;" data-name="kenny">github</a><!--rehype:rel=external&style=color:pink;&data-name=kenny-->',
     }
   ].forEach((data, idx) => {
     it(data.title, async () => {
