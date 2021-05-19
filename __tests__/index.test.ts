@@ -184,6 +184,11 @@ describe('rehype-attr test case', () => {
       title: 'options="attr" - <strong>',
       markdown: 'This is a <strong>Unicorn</strong><!--rehype:style=color: grey-->',
       expected: 'This is a <strong style="color: grey">Unicorn</strong><!--rehype:style=color: grey-->',
+    },
+    {
+      title: 'options="attr" - <code>',
+      markdown: 'This is the <code>content</code><!--rehype:style=color:pink;-->',
+      expected: 'This is the <code style="color:pink;">content</code><!--rehype:style=color:pink;-->',
     }
   ].forEach((data, idx) => {
     it(data.title, async () => {
