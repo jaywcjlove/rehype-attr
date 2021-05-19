@@ -20,11 +20,38 @@ console.log('')
 
 ### `Links`
 
+```html
+<a href="https://github.com">github</a><!--rehype:rel=external-->
+```
+
+> Output: 
+> ```html
+> <a href="https://github.com" rel="external">github</a>
+> ```
+
+<details>
+<summary>Example Code</summary>
+
+```js
+const rehype = require('rehype')
+const rehypeAttrs = require('rehype-attr')
+
+const htmlStr = rehype()
+  .data('settings', { fragment: true })
+  .use(rehypeAttrs, { properties: 'attr' })
+  .processSync(`<a href="https://github.com">github</a><!--rehype:rel=external-->`)
+  .toString()
+```
+
+</details>
+
+<br />
+
 ```markdown
 [github](https://github.com)<!--rehype:rel=external-->
 ```
 
-> Output:
+> Output: 
 > ```html
 > <p>
 >   <a href="https://github.com" rel="external">github</a>
@@ -32,7 +59,62 @@ console.log('')
 > </p>
 > ```
 
+
+<details>
+<summary>Example Code</summary>
+
+```js
+const unified = require("unified");
+const stringify = require('rehype-stringify')
+const rehypeRaw = require('rehype-raw')
+const remark2rehype = require('remark-rehype')
+const remarkParse = require('remark-parse')
+const rehypeAttrs = require('rehype-attr')
+
+const htmlStr = unified()
+  .use(remarkParse)
+  .use(remark2rehype, { allowDangerousHtml: true })
+  .use(rehypeRaw)
+  .use(rehypeAttrs, { properties: 'attr' })
+  .use(stringify)
+  .processSync(`[github](https://github.com)<!--rehype:rel=external-->`)
+  .toString()
+```
+
+</details>
+
+<br />
+
 ### `Header`
+
+#### `HTML Example`
+
+```html
+<h1>This is a title</h1><!--rehype:style=color:pink;-->
+```
+
+> Output: 
+> ```html
+> <h1 style="color:pink;">This is a title</h1>
+> ```
+
+<details>
+<summary>Example Code</summary>
+
+```js
+const rehype = require('rehype')
+const rehypeAttrs = require('rehype-attr')
+
+const htmlStr = rehype()
+  .data('settings', { fragment: true })
+  .use(rehypeAttrs, { properties: 'attr' })
+  .processSync(`<h1>This is a title</h1><!--rehype:style=color:pink;-->`)
+  .toString()
+```
+
+</details>
+
+#### `Markdown Example`
 
 ```markdown
 This is a title
@@ -57,6 +139,19 @@ This is a title
 
 ### `Strong`
 
+#### `HTML Example`
+
+```html
+This is a <strong>Unicorn</strong><!--rehype:style=color: grey-->
+```
+
+> Output: 
+> ```html
+> This is a <strong style="color: grey">Unicorn</strong>
+> ```
+
+#### `Markdown Example`
+
 ```markdown
 This is a **Unicorn**<!--rehype:style=color: grey-->
 ```
@@ -68,6 +163,19 @@ This is a **Unicorn**<!--rehype:style=color: grey-->
 
 ### `Emphasis`
 
+#### `HTML Example`
+
+```html
+Npm stand for <em>node</em><!--rehype:style=color: red--> packet manager.
+```
+
+> Output: 
+> ```html
+> Npm stand for <em style="color: red">node</em> packet manager.
+> ```
+
+#### `Markdown Example`
+
 ```markdown
 Npm stand for *node* <!--rehype:style=color: red--> packet manager.
 ```
@@ -75,7 +183,7 @@ Npm stand for *node* <!--rehype:style=color: red--> packet manager.
 > Output:
 > 
 > ```html
-> <p>This is a <strong style="color: grey">Unicorn</strong> <!--rehype:style=color: grey--></p>
+> <p>Npm stand for <em style="color: red">node</em><!--rehype:style=color: red--> packet manager.</p>
 > ```
 
 ### `Inlne Code`
@@ -112,6 +220,26 @@ This is the `content`<!--rehype:style=color:pink;-->
 npm i rehype-attr
 yarn add rehype-attr
 ```
+
+### `HTML Example`
+
+```js
+const rehype = require('rehype')
+const rehypeAttrs = require('rehype-attr')
+
+const htmlStr = rehype()
+  .data('settings', { fragment: true })
+  .use(rehypeAttrs, { properties: 'attr' })
+  .processSync(`<a href="https://github.com">github</a><!--rehype:rel=external-->`)
+  .toString()
+```
+
+Output: 
+```html
+<h1 style="color:pink;">This is a title</h1>
+```
+
+### `Markdown Example`
 
 ```js
 const unified = require("unified");
