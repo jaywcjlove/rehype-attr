@@ -203,18 +203,18 @@ console.log('')
 ###### `HTML Example`
 
 ```html
-This is the <code style="color:pink;">content</code><!--rehype:style=color:pink;-->
+This is the <code>content</code><!--rehype:style=color:pink;-->
 ```
 
 > Output: 
 > ```html
-> Npm stand for <em style="color: red">node</em> packet manager.
+> This is the <code style="color:pink;">content</code>
 > ```
 
 ###### `Markdown Example`
 
 ```markdown
-This is the <code style="color:pink;">content</code>
+This is the `content`<!--rehype:style=color:pink;-->
 ```
 
 > Output:
