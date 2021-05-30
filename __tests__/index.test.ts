@@ -9,12 +9,41 @@ const remarkParse = require('remark-parse')
 const gfm = require('remark-gfm')
 const rehypeAttrs = require('../lib')
 const utils = require('../lib/utils')
+const visit = require('../lib/visit')
 
 const mrkStr = "<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
 
 describe('rehype-attr function test case', () => {
-  it('getURLParameters', async () => {
-    expect(utils.getURLParameters('title=1&b=2')).toEqual({ title: "1", b: "2" });
+  it('visit', async () => {
+    const node = {
+      "type": "root",
+      "children": [
+        {
+          "type": "element",
+          "tagName": "p",
+          "properties": {},
+          "children": [
+            { "type": "text", "value": "This is a " },
+            { "type": "element", "tagName": "del", "properties": {}, "children": [ { "type": "text", "value": "title" } ] },
+            { "type": "comment", "value": "rehype:style=color:pink;" }
+          ]
+        }
+      ],
+      "data": { "quirksMode": false }
+    }
+    visit(node, 'element', (node, index, parent) => {
+      expect(/(del|p)/.test(node.tagName)).toBeTruthy()
+      expect(typeof node).toEqual('object')
+      expect(typeof index).toEqual('number')
+      expect(typeof parent).toEqual('object')
+    })
+    expect(visit(node)).toBeUndefined()
+    expect(visit(node, 'element')).toBeUndefined()
+    expect(visit(node, 'element', () => {})).toBeUndefined()
+    expect(visit()).toBeUndefined()
+    expect(visit(undefined)).toBeUndefined()
+    expect(visit(undefined, undefined)).toBeUndefined()
+    expect(visit(undefined, undefined, undefined)).toBeUndefined()
   });
   it('getCommentObject', async () => {
     expect(utils.getCommentObject({})).toEqual({ });
@@ -164,6 +193,11 @@ describe('rehype-attr test case', () => {
       title: 'options="attr" - Code',
       markdown: '<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log("")\n```',
       expected: '<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log("")\n</code></pre>',
+    },
+    {
+      title: 'options="attr" - Code',
+      markdown: '```js\nconsole.log("")\n```\n<!--rehype:title=Rehype Attrs-->',
+      expected: '<pre title="Rehype Attrs"><code class="language-js">console.log("")\n</code></pre>\n<!--rehype:title=Rehype Attrs-->',
     },
     {
       title: 'options="attr" - Emphasis <em>',

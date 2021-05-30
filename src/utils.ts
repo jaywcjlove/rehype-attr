@@ -19,12 +19,13 @@ export const prevChild = (data: Content[] = [], index: number): CommentData | un
   let i = index;
   while (i > -1) {
     i--;
-    if ((data[i].value && (data[i].value as string).replace(/(\n|\s)/g, '') !== '') || data[i].type !== 'text') {
+    if (!data[i]) return
+    if ((data[i] && data[i].value && ((data[i].value || '') as string).replace(/(\n|\s)/g, '') !== '') || data[i].type !== 'text') {
       if (!/rehype:/.test(data[i].value as string) && (data[i].type as string) !== 'comment') return;
       return data[i] as unknown as CommentData;
     }
   }
-  return {} as CommentData;
+  return;
 }
 
 export const nextChild = (data: Content[] = [], index: number, tagName?: string): CommentData | undefined => {
