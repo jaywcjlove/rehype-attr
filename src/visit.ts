@@ -1,8 +1,8 @@
 import { Root, Parent, Content } from 'ts-mdast'
 
-type Callback = (node: Root | Content | Parent, index: number, parent: Parent | Content) => void
+export type VisitCallback = (node: Root | Content | Parent, index: number, parent: Parent | Content) => void
 
-export default function visit(tree: Root, element: string, callback: Callback) {
+export default function visit(tree: Root, element: string, callback: VisitCallback) {
   if (!element || !tree || !callback || typeof callback !== 'function') {
     return
   }
@@ -11,7 +11,7 @@ export default function visit(tree: Root, element: string, callback: Callback) {
   }
 }
 
-function handle(tree: Content[], element: string, parent: Parent | Content, callback: Callback) {
+function handle(tree: Content[], element: string, parent: Parent | Content, callback: VisitCallback) {
   tree.forEach((item, index) => {
     if (item.type === element) {
       callback(item, index, parent)
