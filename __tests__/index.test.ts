@@ -40,6 +40,8 @@ describe('rehype-attr function test case', () => {
     expect(visit(node)).toBeUndefined()
     expect(visit(node, 'element')).toBeUndefined()
     expect(visit(node, 'element', () => {})).toBeUndefined()
+    expect(visit({ type: 'root' }, 'element', () => {})).toBeUndefined()
+    expect(visit({ type: 'root', children: [ { type: 'element' }] }, 'element', () => {})).toBeUndefined()
     expect(visit()).toBeUndefined()
     expect(visit(undefined)).toBeUndefined()
     expect(visit(undefined, undefined)).toBeUndefined()
