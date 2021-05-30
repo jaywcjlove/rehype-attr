@@ -20,7 +20,7 @@ export const prevChild = (data: Content[] = [], index: number): CommentData | un
   while (i > -1) {
     i--;
     if (!data[i]) return
-    if ((data[i] && data[i].value && ((data[i].value || '') as string).replace(/(\n|\s)/g, '') !== '') || data[i].type !== 'text') {
+    if ((data[i] && data[i].value && (data[i].value as string).replace(/(\n|\s)/g, '') !== '') || data[i].type !== 'text') {
       if (!/rehype:/.test(data[i].value as string) && (data[i].type as string) !== 'comment') return;
       return data[i] as unknown as CommentData;
     }
@@ -72,7 +72,7 @@ export const getCommentObject = ({ value = '' }: CommentData): Record<string, st
   return param;
 }
 
-export const propertiesHandle = (defaultAttrs: Record<string, string> = {}, attrs: Record<string, string | number | boolean | null>, type: RehypeAttrsOptions['properties']) => {
+export const propertiesHandle = (defaultAttrs: Record<string, string>, attrs: Record<string, string | number | boolean | null>, type: RehypeAttrsOptions['properties']) => {
   if (type === 'string') {
     return { ...defaultAttrs, 'data-config': JSON.stringify({ ...attrs, rehyp: true })}
   } else if (type === 'attr') {

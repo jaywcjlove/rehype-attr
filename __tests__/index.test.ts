@@ -51,6 +51,20 @@ describe('rehype-attr function test case', () => {
     expect(utils.getCommentObject({})).toEqual({ });
     expect(utils.getCommentObject({ value: 'rehype:title=Rehype Attrs' })).toEqual({ title: 'Rehype Attrs' });
   });
+  it('prevChild', async () => {
+    expect(utils.prevChild(undefined, 0)).toBeUndefined()
+    expect(utils.prevChild(undefined, -1)).toBeUndefined()
+    expect(utils.prevChild([ { type: 'elment', value: 'rehype:title=Rehype Attrs' } ], 1)).toEqual({ type: "elment", value: "rehype:title=Rehype Attrs" })
+    expect(utils.prevChild([ { type: 'comment', value: 'rehype:title=Rehype Attrs' }, { type: 'text' } ], 1)).toEqual({ type: "comment", value: "rehype:title=Rehype Attrs" })
+    expect(utils.prevChild([ { type: 'text', value: '\n' }, { type: 'comment', value: 'rehype:title=Rehype Attrs' } ], 2)).toEqual({ type: "comment", value: "rehype:title=Rehype Attrs" })
+  });
+  it('prevChild', async () => {
+    expect(utils.nextChild(undefined, 0)).toBeUndefined()
+    expect(utils.nextChild(undefined, -1)).toBeUndefined()
+    expect(utils.nextChild([ { type: 'elment', value: 'rehype:title=Rehype Attrs' } ], 0)).toBeUndefined()
+    expect(utils.nextChild([ { type: 'text' }, { type: 'comment', value: 'rehype:title=Rehype Attrs' } ], 0)).toEqual({ type: "comment", value: "rehype:title=Rehype Attrs" })
+    expect(utils.nextChild([ { type: 'text', value: '\n' }, { type: 'comment', value: 'rehype:title=Rehype Attrs' } ], 0)).toEqual({ type: "comment", value: "rehype:title=Rehype Attrs" })
+  });
   it('propertiesHandle', async () => {
     expect(utils.propertiesHandle({}, {})).toEqual({
       'data-config': {
@@ -145,7 +159,6 @@ describe('rehype-attr test case', () => {
       expect(htmlStr).toEqual(expected);
   });
 
-  
   it('options="attr" - Multiple value settings 3', async () => {
     const markdown = "test\n<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
     const expected = `<p>test</p>\n<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log('')\n</code></pre>`
@@ -190,6 +203,11 @@ describe('rehype-attr test case', () => {
       title: 'options="attr" - not config 6',
       markdown: 'test\n<!--rehype:a&-->',
       expected: '<p>test</p>\n<!--rehype:a&-->',
+    },
+    {
+      title: 'options="attr" - Code - not config 7',
+      markdown: '<!--rehype:-->\n```js\nconsole.log("")\n```',
+      expected: '<!--rehype:-->\n<pre><code class="language-js">console.log("")\n</code></pre>',
     },
     {
       title: 'options="attr" - Code',
