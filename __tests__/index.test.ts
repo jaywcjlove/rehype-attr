@@ -8,8 +8,15 @@ const remark2rehype = require('remark-rehype')
 const remarkParse = require('remark-parse')
 const gfm = require('remark-gfm')
 const rehypeAttrs = require('../lib')
+const utils = require('../lib/utils')
 
 const mrkStr = "<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
+
+describe('rehype-attr function test case', () => {
+  it('getURLParameters', async () => {
+    expect(utils.getURLParameters('title=1&b=2')).toEqual({ title: "1", b: "2" });
+  });
+})
 
 describe('rehype-attr test case', () => {
   it('default options="data"', async () => {
@@ -66,7 +73,7 @@ describe('rehype-attr test case', () => {
   });
 
 
-  it('options="attr" - Multiple value settings', async () => {
+  it('options="attr" - Multiple value settings 2', async () => {
     const markdown = "test\n<!--rehype:title=Hello World-->\n<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
     const expected = `<p title="Hello World">test</p>\n<!--rehype:title=Hello World-->\n<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log('')\n</code></pre>`
     const htmlStr = unified()
@@ -79,8 +86,9 @@ describe('rehype-attr test case', () => {
       .toString()
       expect(htmlStr).toEqual(expected);
   });
+
   
-  it('options="attr" - Multiple value settings', async () => {
+  it('options="attr" - Multiple value settings 3', async () => {
     const markdown = "test\n<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
     const expected = `<p>test</p>\n<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log('')\n</code></pre>`
     const htmlStr = unified()
@@ -94,8 +102,17 @@ describe('rehype-attr test case', () => {
       expect(htmlStr).toEqual(expected);
   });
 
-
   [
+    {
+      title: 'options="attr" - not config 1',
+      markdown: 'test\n<!--title=Rehype Attrs-->',
+      expected: '<p>test</p>\n<!--title=Rehype Attrs-->',
+    },
+    {
+      title: 'options="attr" - not config 2',
+      markdown: 'test',
+      expected: '<p>test</p>',
+    },
     {
       title: 'options="attr" - Code',
       markdown: '<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log("")\n```',
