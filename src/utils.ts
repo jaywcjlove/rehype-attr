@@ -55,8 +55,7 @@ export const nextChild = (data: Content[] = [], index: number, tagName?: string)
  * @param index 当前数据所在的位置
  * @returns 返回 当前参数数据 Object，`{}`
  */
-export const getCommentObject = ({ value = '', type }: CommentData): Record<string, string | number | boolean | null> => {
-  if (!/rehype:/.test(value) && type !== 'comment') return {};
+export const getCommentObject = ({ value = '' }: CommentData): Record<string, string | number | boolean | null> => {
   const param = getURLParameters(value.replace(/^rehype:/, ''));
   Object.keys(param).forEach((keyName: string) => {
     if (param[keyName] === 'true') {

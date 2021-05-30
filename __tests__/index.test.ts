@@ -16,6 +16,33 @@ describe('rehype-attr function test case', () => {
   it('getURLParameters', async () => {
     expect(utils.getURLParameters('title=1&b=2')).toEqual({ title: "1", b: "2" });
   });
+  it('getCommentObject', async () => {
+    expect(utils.getCommentObject({})).toEqual({ });
+    expect(utils.getCommentObject({ value: 'rehype:title=Rehype Attrs' })).toEqual({ title: 'Rehype Attrs' });
+  });
+  it('propertiesHandle', async () => {
+    expect(utils.propertiesHandle({}, {})).toEqual({
+      'data-config': {
+        rehyp: true
+      }
+    });
+    expect(utils.propertiesHandle(null, {})).toEqual({
+      'data-config': {
+        rehyp: true
+      }
+    });
+    expect(utils.propertiesHandle(null, {}, 'string')).toEqual({
+      'data-config': '{\"rehyp\":true}'
+    });
+    expect(utils.propertiesHandle(null, {}, 'string')).toEqual({
+      'data-config': '{\"rehyp\":true}'
+    });
+    expect(utils.propertiesHandle(null, null, 'string')).toEqual({
+      'data-config': '{\"rehyp\":true}'
+    });
+    expect(utils.propertiesHandle(null, null, 'attr')).toEqual({});
+    expect(utils.propertiesHandle(null, { a: 1 }, 'attr')).toEqual({ a: 1 });
+  });
 })
 
 describe('rehype-attr test case', () => {
@@ -112,6 +139,26 @@ describe('rehype-attr test case', () => {
       title: 'options="attr" - not config 2',
       markdown: 'test',
       expected: '<p>test</p>',
+    },
+    {
+      title: 'options="attr" - not config 3',
+      markdown: 'test\n<!---->',
+      expected: '<p>test</p>\n<!---->',
+    },
+    {
+      title: 'options="attr" - not config 4',
+      markdown: 'test\n<!--rehype:-->',
+      expected: '<p>test</p>\n<!--rehype:-->',
+    },
+    {
+      title: 'options="attr" - not config 5',
+      markdown: 'test\n<!--rehype-->',
+      expected: '<p>test</p>\n<!--rehype-->',
+    },
+    {
+      title: 'options="attr" - not config 6',
+      markdown: 'test\n<!--rehype:a&-->',
+      expected: '<p>test</p>\n<!--rehype:a&-->',
     },
     {
       title: 'options="attr" - Code',
