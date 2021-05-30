@@ -51,6 +51,50 @@ describe('rehype-attr test case', () => {
       expect(htmlStr).toEqual(expected);
   });
 
+  it('options="attr" - Multiple value settings 1', async () => {
+    const markdown = "test\n\n<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
+    const expected = `<p>test</p>\n<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log('')\n</code></pre>`
+    const htmlStr = unified()
+      .use(remarkParse)
+      .use(remark2rehype, { allowDangerousHtml: true })
+      .use(rehypeRaw)
+      .use(rehypeAttrs, { properties: 'attr' })
+      .use(stringify)
+      .processSync(markdown)
+      .toString()
+      expect(htmlStr).toEqual(expected);
+  });
+
+
+  it('options="attr" - Multiple value settings', async () => {
+    const markdown = "test\n<!--rehype:title=Hello World-->\n<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
+    const expected = `<p title="Hello World">test</p>\n<!--rehype:title=Hello World-->\n<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log('')\n</code></pre>`
+    const htmlStr = unified()
+      .use(remarkParse)
+      .use(remark2rehype, { allowDangerousHtml: true })
+      .use(rehypeRaw)
+      .use(rehypeAttrs, { properties: 'attr' })
+      .use(stringify)
+      .processSync(markdown)
+      .toString()
+      expect(htmlStr).toEqual(expected);
+  });
+  
+  it('options="attr" - Multiple value settings', async () => {
+    const markdown = "test\n<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
+    const expected = `<p>test</p>\n<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log('')\n</code></pre>`
+    const htmlStr = unified()
+      .use(remarkParse)
+      .use(remark2rehype, { allowDangerousHtml: true })
+      .use(rehypeRaw)
+      .use(rehypeAttrs, { properties: 'attr' })
+      .use(stringify)
+      .processSync(markdown)
+      .toString()
+      expect(htmlStr).toEqual(expected);
+  });
+
+
   [
     {
       title: 'options="attr" - Code',
