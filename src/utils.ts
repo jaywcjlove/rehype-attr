@@ -39,6 +39,7 @@ export const nextChild = (data: Content[] = [], index: number, tagName?: string)
     } else {
       if (!data[i] || (data[i].type !== 'text' && (data[i].type as string) !== 'comment') || (data[i].type == 'text' && (data[i].value as string).replace(/(\n|\s)/g, '') !== '')) return
       if ((data[i].type as string) === 'comment') {
+        if (!/rehype:/.test(data[i].value as string)) return;
         const nextNode = nextChild(data, i, 'pre')
         if (nextNode) return;
         return data[i] as unknown as CommentData;
