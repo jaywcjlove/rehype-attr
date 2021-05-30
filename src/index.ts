@@ -3,9 +3,6 @@ import {Plugin} from 'unified'
 import visit from './visit'
 import { propertiesHandle, nextChild, prevChild, getCommentObject } from './utils'
 
-export * from './visit'
-export * from './utils'
-
 export type MdastTransformer = (tree: Root) => void
 
 export type RehypeAttrsOptions = {
