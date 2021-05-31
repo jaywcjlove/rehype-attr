@@ -49,7 +49,7 @@ jobs:
             [![npm bundle size](https://img.shields.io/bundlephobia/minzip/rehype-attr)](https://bundlephobia.com/result?p=rehype-attr@${{steps.create_tag.outputs.versionNumber}})
 
             ```bash
-            npm i @uiw/react-heat-map@${{steps.create_tag.outputs.versionNumber}}
+            npm i rehype-attr@${{steps.create_tag.outputs.versionNumber}}
             ```
 
             ${{ steps.changelog.outputs.compareurl }}
