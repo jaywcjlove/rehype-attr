@@ -41,12 +41,7 @@ jobs:
           name: ${{ steps.create_tag.outputs.version }}
           tag: ${{ steps.create_tag.outputs.version }}
           body: |
-            [![](https://img.shields.io/badge/Open%20in-unpkg-blue)](https://uiwjs.github.io/npm-unpkg/#/pkg/rehype-attr@${{steps.create_tag.outputs.versionNumber}}/file/README.md)
-            [![](https://img.shields.io/github/issues/jaywcjlove/rehype-attr.svg)](https://github.com/jaywcjlove/rehype-attr/releases)
-            [![](https://img.shields.io/github/forks/jaywcjlove/rehype-attr.svg)](https://github.com/jaywcjlove/rehype-attr/network)
-            [![](https://img.shields.io/github/stars/jaywcjlove/rehype-attr.svg)](https://github.com/jaywcjlove/rehype-attr/stargazers)
-            [![](https://img.shields.io/github/release/jaywcjlove/rehype-attr.svg)](https://github.com/jaywcjlove/rehype-attr/releases)
-            [![npm bundle size](https://img.shields.io/bundlephobia/minzip/rehype-attr)](https://bundlephobia.com/result?p=rehype-attr@${{steps.create_tag.outputs.versionNumber}})
+            [![](https://img.shields.io/badge/Open%20in-unpkg-blue)](https://uiwjs.github.io/npm-unpkg/#/pkg/rehype-attr@${{steps.create_tag.outputs.versionNumber}}/file/README.md) [![](https://img.shields.io/github/issues/jaywcjlove/rehype-attr.svg)](https://github.com/jaywcjlove/rehype-attr/releases) [![](https://img.shields.io/github/forks/jaywcjlove/rehype-attr.svg)](https://github.com/jaywcjlove/rehype-attr/network) [![](https://img.shields.io/github/stars/jaywcjlove/rehype-attr.svg)](https://github.com/jaywcjlove/rehype-attr/stargazers) [![](https://img.shields.io/github/release/jaywcjlove/rehype-attr.svg)](https://github.com/jaywcjlove/rehype-attr/releases) [![npm bundle size](https://img.shields.io/bundlephobia/minzip/rehype-attr)](https://bundlephobia.com/result?p=rehype-attr@${{steps.create_tag.outputs.versionNumber}})
 
             ```bash
             npm i rehype-attr@${{steps.create_tag.outputs.versionNumber}}
