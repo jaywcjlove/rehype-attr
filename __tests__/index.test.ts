@@ -196,6 +196,11 @@ describe('rehype-attr test case', () => {
       expected: '<!--rehype:-->\n<pre><code class="language-js">console.log("")\n</code></pre>',
     },
     {
+      title: 'options="attr" - not config 8',
+      markdown: 'test\n<!--23rehype:a=1&-->',
+      expected: '<p>test</p>\n<!--23rehype:a=1&-->',
+    },
+    {
       title: 'options="attr" - Code',
       markdown: '<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log("")\n```',
       expected: '<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log("")\n</code></pre>',
