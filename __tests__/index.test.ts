@@ -64,6 +64,7 @@ describe('rehype-attr function test case', () => {
     expect(utils.nextChild([ { type: 'elment', value: 'rehype:title=Rehype Attrs' } ], 0)).toBeUndefined()
     expect(utils.nextChild([ { type: 'text' }, { type: 'comment', value: 'rehype:title=Rehype Attrs' } ], 0)).toEqual({ type: "comment", value: "rehype:title=Rehype Attrs" })
     expect(utils.nextChild([ { type: 'text', value: '\n' }, { type: 'comment', value: 'rehype:title=Rehype Attrs' } ], 0)).toEqual({ type: "comment", value: "rehype:title=Rehype Attrs" })
+    expect(utils.nextChild([ { type: 'text', value: '\n' }, { type: 'text', value: '' }, { type: 'element', tagName: 'pre' } ], 0, 'pre')).toEqual({ type: 'element', tagName: 'pre' })
   });
   it('propertiesHandle', async () => {
     expect(utils.propertiesHandle({}, {})).toEqual({
@@ -129,34 +130,30 @@ describe('rehype-attr test case', () => {
       .toString()
       expect(htmlStr).toEqual(expected);
   });
-  it('options="attr" - Table', async () => {
-    const markdown = "| Property | Description |\n |---- |---- |\n | 1 | 2 |\n\n<!--rehype:border=1-->"
-    const expected = `<table border="1"><thead><tr><th>Property</th><th>Description</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table>\n<!--rehype:border=1-->`
-    const htmlStr = unified()
-      .use(remarkParse)
-      .use(gfm)
-      .use(remark2rehype, { allowDangerousHtml: true })
-      .use(rehypeRaw)
-      .use(rehypeAttrs, { properties: 'attr' })
-      .use(stringify)
-      .processSync(markdown)
-      .toString()
-      expect(htmlStr.replace(/^\n+/, '')).toEqual(expected);
-  });
 
-  it('options="attr" - Table 2 `\\n\\n` ???', async () => {
-    const markdown = "| Property | Description |\n |---- |---- |\n | 1 | 2 |\n<!--rehype:border=1-->"
-    const expected = `<table><thead><tr><th>Property</th><th>Description</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr><tr><td><!--rehype:border=1--></td><td></td></tr></tbody></table>`
-    const htmlStr = unified()
-      .use(remarkParse)
-      .use(gfm)
-      .use(remark2rehype, { allowDangerousHtml: true })
-      .use(rehypeRaw)
-      .use(rehypeAttrs, { properties: 'attr' })
-      .use(stringify)
-      .processSync(markdown)
-      .toString()
-      expect(htmlStr.replace(/^\n+/, '')).toEqual(expected);
+  [
+    {
+      title: 'options="attr" - Table',
+      markdown: '| Property | Description |\n |---- |---- |\n | 1 | 2 |\n\n<!--rehype:border=1-->',
+      expected: '<table border="1"><thead><tr><th>Property</th><th>Description</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table>\n<!--rehype:border=1-->',
+    }, {
+      title: 'options="attr" - Table 2 `\\n\\n` ???',
+      markdown: '| Property | Description |\n |---- |---- |\n | 1 | 2 |\n<!--rehype:border=1-->',
+      expected: '<table><thead><tr><th>Property</th><th>Description</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr><tr><td><!--rehype:border=1--></td><td></td></tr></tbody></table>',
+    }
+  ].forEach((data, idx) => {
+    it(data.title, async () => {
+      const htmlStr = unified()
+        .use(remarkParse)
+        .use(gfm)
+        .use(remark2rehype, { allowDangerousHtml: true })
+        .use(rehypeRaw)
+        .use(rehypeAttrs, { properties: 'attr' })
+        .use(stringify)
+        .processSync(data.markdown)
+        .toString()
+        expect(htmlStr.replace(/^\n+/, '')).toEqual(data.expected);
+    });
   });
 
   [

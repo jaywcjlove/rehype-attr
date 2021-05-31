@@ -34,8 +34,7 @@ export const nextChild = (data: Content[] = [], index: number, tagName?: string)
     i++;
     if (tagName) {
       if (data[i] && data[i].value && (data[i].value as string).replace(/(\n|\s)/g, '') !== '' || data[i] && (data[i].type as string) === 'element') {
-        if (data[i].tagName !== tagName) return;
-        if (data[i].tagName === tagName) return data[i] as unknown as CommentData;
+        return data[i].tagName === tagName ? data[i] as unknown as CommentData : undefined
       }
     } else {
       if (!data[i] || (data[i].type !== 'text' && (data[i].type as string) !== 'comment') || (data[i].type == 'text' && (data[i].value as string).replace(/(\n|\s)/g, '') !== '')) return

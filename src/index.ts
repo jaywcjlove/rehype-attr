@@ -56,7 +56,7 @@ const rehypeAttrs: Plugin<[RehypeAttrsOptions?]> = (options): MdastTransformer =
   return transformer
   function transformer(tree: Root) {
     visit(tree, 'element', (node: Root, index: number, parent: Parent) => {
-      const codeNode = node && node.children ? node.children[0] as any : null
+      const codeNode = node && node.children && node.children[0] as any
       if (node.tagName === 'pre' && codeNode && codeNode.tagName === 'code' && Array.isArray(parent.children) && parent.children.length > 1) {
         const child = prevChild(parent.children, index)
         if (child) {
