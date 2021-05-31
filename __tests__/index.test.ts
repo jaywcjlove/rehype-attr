@@ -54,7 +54,7 @@ describe('rehype-attr function test case', () => {
   it('prevChild', async () => {
     expect(utils.prevChild(undefined, 0)).toBeUndefined()
     expect(utils.prevChild(undefined, -1)).toBeUndefined()
-    expect(utils.prevChild([ { type: 'elment', value: 'rehype:title=Rehype Attrs' } ], 1)).toEqual({ type: "elment", value: "rehype:title=Rehype Attrs" })
+    expect(utils.prevChild([ { type: 'comment', value: 'rehype:title=Rehype Attrs' }, { type: 'text', value: '\n' } ], 1)).toEqual({ type: "comment", value: "rehype:title=Rehype Attrs" })
     expect(utils.prevChild([ { type: 'comment', value: 'rehype:title=Rehype Attrs' }, { type: 'text' } ], 1)).toEqual({ type: "comment", value: "rehype:title=Rehype Attrs" })
     expect(utils.prevChild([ { type: 'text', value: '\n' }, { type: 'comment', value: 'rehype:title=Rehype Attrs' } ], 2)).toEqual({ type: "comment", value: "rehype:title=Rehype Attrs" })
   });
@@ -191,6 +191,11 @@ describe('rehype-attr test case', () => {
       title: 'options="attr" - Code - not config 7',
       markdown: '<!--rehype:-->\n```js\nconsole.log("")\n```',
       expected: '<!--rehype:-->\n<pre><code class="language-js">console.log("")\n</code></pre>',
+    },
+    {
+      title: 'options="attr" - Code - not config 8',
+      markdown: '<!--wrehype:a=1-->\n```js\nconsole.log("")\n```',
+      expected: '<!--wrehype:a=1-->\n<pre><code class="language-js">console.log("")\n</code></pre>',
     },
     {
       title: 'options="attr" - not config 8',
