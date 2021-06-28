@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/jest": "26.0.23",
-    "jest": "27.0.3",
+    "jest": "27.0.6",
     "rehype": "11.0.0",
     "rehype-raw": "5.1.0",
     "rehype-stringify": "8.0.0",
