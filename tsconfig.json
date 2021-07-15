@@ -18,21 +18,10 @@
     "noFallthroughCasesInSwitch": true,
     "noEmit": true,
     "types": ["jest", "node"],
-    // "types": ["jest", "node"],
-
 
     "outDir": "lib",
-
-    // // "module": "commonjs",
-    // "noImplicitThis": true,
-    // "strictBindCallApply": true,
-    // "strictNullChecks": true,
-    // "strictPropertyInitialization": true,
-    // "stripInternal": true,
-    // "noImplicitAny": true,
   },
   "include": [
-    "src/types/*",
     "src",
     "test"
   ]
