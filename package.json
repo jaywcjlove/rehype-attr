@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "ts-mdast": "1.0.0",
-    "unified": "9.2.1"
+    "unified": "9.2.2"
   },
   "devDependencies": {
     "@types/jest": "26.0.23",
