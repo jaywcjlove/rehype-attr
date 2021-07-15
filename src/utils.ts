@@ -1,4 +1,4 @@
-import { Content } from 'ts-mdast'
+import { Parent, NodeData } from 'unist';
 import { RehypeAttrsOptions } from './'
 
 export const getURLParameters = (url: string): Record<string, string | number | boolean> =>
@@ -11,11 +11,11 @@ export const getURLParameters = (url: string): Record<string, string | number | 
 );
 
 type CommentData = {
-  type: 'comment',
+  type?: 'comment',
   value?: string,
 }
 
-export const prevChild = (data: Content[] = [], index: number): CommentData | undefined => {
+export const prevChild = (data: NodeData<Parent>[] = [], index: number): CommentData | undefined => {
   let i = index;
   while (i > -1) {
     i--;
@@ -28,7 +28,7 @@ export const prevChild = (data: Content[] = [], index: number): CommentData | un
   return;
 }
 
-export const nextChild = (data: Content[] = [], index: number, tagName?: string): CommentData | undefined => {
+export const nextChild = (data: NodeData<Parent>[] = [], index: number, tagName?: string): CommentData | undefined => {
   let i = index;
   while (i < data.length) {
     i++;
@@ -71,7 +71,7 @@ export const getCommentObject = ({ value = '' }: CommentData): Record<string, st
   return param;
 }
 
-export const propertiesHandle = (defaultAttrs: Record<string, string>, attrs: Record<string, string | number | boolean | null>, type: RehypeAttrsOptions['properties']) => {
+export const propertiesHandle = (defaultAttrs?: Record<string, string> | null, attrs?: Record<string, string | number | boolean | null> | null, type?: RehypeAttrsOptions['properties']) => {
   if (type === 'string') {
     return { ...defaultAttrs, 'data-config': JSON.stringify({ ...attrs, rehyp: true })}
   } else if (type === 'attr') {

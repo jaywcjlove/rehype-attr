@@ -1,9 +1,9 @@
-import { Root, Parent } from 'ts-mdast'
-import {Plugin} from 'unified'
+import { Plugin, Transformer } from 'unified'
+import { Parent, NodeData, Node } from 'unist';
 import visit from './visit'
-import { propertiesHandle, nextChild, prevChild, getCommentObject } from './utils'
+import { propertiesHandle, nextChild, prevChild, getCommentObject } from './utils';
 
-export type MdastTransformer = (tree: Root) => void
+export type MdastTransformer = (tree: NodeData<Parent>) => void
 
 export type RehypeAttrsOptions = {
   /**
@@ -51,12 +51,13 @@ const defaultOptions: RehypeAttrsOptions = {
   properties: 'data'
 }
 
-const rehypeAttrs: Plugin<[RehypeAttrsOptions?]> = (options): MdastTransformer =>{
+const rehypeAttrs: Plugin<[RehypeAttrsOptions?]> = (options): Transformer => {
   const opts = { ...defaultOptions, ...options }
-  return transformer
-  function transformer(tree: Root) {
-    visit(tree, 'element', (node: Root, index: number, parent: Parent) => {
-      const codeNode = node && node.children && node.children[0] as any
+  return transformer;
+  function transformer(tree: Node<NodeData<Parent>>): void {
+    // ????? any
+    visit(tree as any, 'element', (node: NodeData<Parent>, index: number, parent: NodeData<Parent>) => {
+      const codeNode = node && node.children && Array.isArray(node.children) && node.children[0]
       if (node.tagName === 'pre' && codeNode && codeNode.tagName === 'code' && Array.isArray(parent.children) && parent.children.length > 1) {
         const child = prevChild(parent.children, index)
         if (child) {
@@ -67,7 +68,7 @@ const rehypeAttrs: Plugin<[RehypeAttrsOptions?]> = (options): MdastTransformer =
           }
         }
       }
-      if (/^(em|strong|b|a|i|p|pre|blockquote|h(1|2|3|4|5|6)|code|table|img|del|ul|ol)$/.test(node.tagName as string)) {
+      if (/^(em|strong|b|a|i|p|pre|blockquote|h(1|2|3|4|5|6)|code|table|img|del|ul|ol)$/.test(node.tagName as string) && Array.isArray(parent.children)) {
         const child = nextChild(parent.children, index)
         if (child) {
           const attr = getCommentObject(child)

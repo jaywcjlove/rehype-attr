@@ -1,22 +1,39 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "target": "esnext",
-    "module": "commonjs",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
     "moduleResolution": "node",
-    "sourceMap": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "declaration": true,
+    "baseUrl": ".",
     "noFallthroughCasesInSwitch": true,
-    "noImplicitThis": true,
-    "strictBindCallApply": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "stripInternal": true,
+    "noEmit": true,
+    "types": ["jest", "node"],
+    // "types": ["jest", "node"],
 
-    "esModuleInterop": false,
-    "noImplicitAny": true,
+
     "outDir": "lib",
-    "baseUrl": "."
+
+    // // "module": "commonjs",
+    // "noImplicitThis": true,
+    // "strictBindCallApply": true,
+    // "strictNullChecks": true,
+    // "strictPropertyInitialization": true,
+    // "stripInternal": true,
+    // "noImplicitAny": true,
   },
   "include": [
-    "src/**/*",  ]
+    "src/types/*",
+    "src",
+    "test"
+  ]
 }

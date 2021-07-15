@@ -1,21 +1,20 @@
-/// <reference types="jest" />
-
-const unified = require("unified");
-const rehype = require('rehype')
-const stringify = require('rehype-stringify')
-const rehypeRaw = require('rehype-raw')
-const remark2rehype = require('remark-rehype')
-const remarkParse = require('remark-parse')
-const gfm = require('remark-gfm')
-const rehypeAttrs = require('../lib')
-const utils = require('../lib/utils')
-const visit = require('../lib/visit')
+import { unified, Plugin } from 'unified'
+import { Parent, NodeData } from 'unist';
+import rehype from 'rehype';
+import gfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import remark2rehype from 'remark-rehype';
+import remarkParse from 'remark-parse';
+import stringify from 'rehype-stringify';
+import rehypeAttrs from '../src';
+import * as utils from '../src/utils';
+import visit from '../src/visit';
 
 const mrkStr = "<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
 
 describe('rehype-attr function test case', () => {
   it('visit', async () => {
-    const node = {
+    const node: NodeData<Parent> = {
       "type": "root",
       "children": [
         {
@@ -31,9 +30,9 @@ describe('rehype-attr function test case', () => {
       ],
       "data": { "quirksMode": false }
     }
-    visit(node, 'element', (node, index, parent) => {
-      expect(/(del|p)/.test(node.tagName)).toBeTruthy()
-      expect(typeof node).toEqual('object')
+    visit(node, 'element', (childNode, index, parent) => {
+      expect(/(del|p)/.test((childNode as any).tagName)).toBeTruthy()
+      expect(typeof childNode).toEqual('object')
       expect(typeof index).toEqual('number')
       expect(typeof parent).toEqual('object')
     })
@@ -387,9 +386,13 @@ describe('rehype-attr test case', () => {
     }
   ].forEach((data, idx) => {
     it(data.title, async () => {
+      const pluginWithoutOptions: Plugin<void[]> =  (options) => {
+        // expectType<void>(options)
+      }
+      
       const htmlStr = rehype()
         .data('settings', { fragment: true })
-        .use(rehypeAttrs, { properties: 'attr' })
+        .use(rehypeAttrs as any, { properties: 'attr' })
         .processSync(data.markdown)
         .toString()
         expect(htmlStr).toEqual(data.expected);
