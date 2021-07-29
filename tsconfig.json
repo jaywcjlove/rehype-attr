@@ -17,11 +17,9 @@
     "baseUrl": ".",
     "noFallthroughCasesInSwitch": true,
     "types": ["jest", "node"],
-
     "outDir": "lib",
   },
   "include": [
-    "src",
-    "test"
+    "src"
   ]
 }
