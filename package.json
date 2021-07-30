@@ -44,7 +44,7 @@
     ]
   },
   "dependencies": {
-    "unified": "10.0.1"
+    "unified": "10.1.0"
   },
   "devDependencies": {
     "@types/jest": "26.0.24",
