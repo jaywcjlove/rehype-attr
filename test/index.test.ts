@@ -360,6 +360,11 @@ describe('rehype-attr test case', () => {
       expected: '<i style="color:pink;">Title</i><!--rehype:style=color:pink;-->',
     },
     {
+      title: 'options="attr" - <kbd>',
+      markdown: '<kbd>R</kbd><!--rehype:style=color:pink;-->',
+      expected: '<kbd style="color:pink;">R</kbd><!--rehype:style=color:pink;-->',
+    },
+    {
       title: 'options="attr" - <strong>',
       markdown: 'This is a <strong>Unicorn</strong><!--rehype:style=color: grey-->',
       expected: 'This is a <strong style="color: grey">Unicorn</strong><!--rehype:style=color: grey-->',

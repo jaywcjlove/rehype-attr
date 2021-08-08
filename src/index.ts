@@ -68,7 +68,7 @@ const rehypeAttrs: Plugin<[RehypeAttrsOptions?]> = (options): Transformer => {
           }
         }
       }
-      if (/^(em|strong|b|a|i|p|pre|blockquote|h(1|2|3|4|5|6)|code|table|img|del|ul|ol)$/.test(node.tagName as string) && Array.isArray(parent.children)) {
+      if (/^(em|strong|b|a|i|p|pre|kbd|blockquote|h(1|2|3|4|5|6)|code|table|img|del|ul|ol)$/.test(node.tagName as string) && Array.isArray(parent.children)) {
         const child = nextChild(parent.children, index)
         if (child) {
           const attr = getCommentObject(child)
