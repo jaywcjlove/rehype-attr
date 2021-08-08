@@ -1,6 +1,6 @@
 import { unified, Plugin } from 'unified'
 import { Parent, NodeData } from 'unist';
-import rehype from 'rehype';
+import { rehype } from 'rehype';
 import gfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import remark2rehype from 'remark-rehype';
