@@ -40,7 +40,7 @@
       "<rootDir>/src/*.{tsx,ts}"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(unified|bail|is-plain-obj|trough|vfile|rehype|rehype-parse|character-entities-legacy|character-entities-html4|ccount|hast-util-whitespace|stringify-entities|hast-util-from-parse5|hast-util-is-element|unist-util-is|hastscript|property-information|hast-util-parse-selector|space-separated-tokens|comma-separated-tokens|rehype-stringify|hast-util-to-html|html-void-elements|vfile-location|web-namespaces|vfile-message|unist-util-stringify-position)/)"
+      "<rootDir>/node_modules/?!(.*)"
     ]
   },
   "dependencies": {
