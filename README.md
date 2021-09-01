@@ -8,6 +8,14 @@ rehype-attr
 
 New syntax to add attributes to Markdown. `rehype-attr` like [`remark-attr`](https://github.com/arobase-che/remark-attr)
 
+## Installation
+
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c): Node 12+ is needed to use it and it must be `import` instead of `require`.
+
+```bash
+npm install rehype-attr
+```
+
 ## Default Syntax
 
 ### `Links`
@@ -27,8 +35,8 @@ New syntax to add attributes to Markdown. `rehype-attr` like [`remark-attr`](htt
 <summary>Example Code</summary>
 
 ```js
-const rehype = require('rehype')
-const rehypeAttrs = require('rehype-attr')
+import { rehype } from 'rehype';
+import rehypeAttrs from 'rehype-attr';
 
 const htmlStr = rehype()
   .data('settings', { fragment: true })
@@ -58,12 +66,12 @@ const htmlStr = rehype()
 <summary>Example Code</summary>
 
 ```js
-const unified = require("unified");
-const stringify = require('rehype-stringify')
-const rehypeRaw = require('rehype-raw')
-const remark2rehype = require('remark-rehype')
-const remarkParse = require('remark-parse')
-const rehypeAttrs = require('rehype-attr')
+import { unified } from 'unified';
+import stringify from 'rehype-stringify';
+import rehypeRaw from 'rehype-raw';
+import remark2rehype from 'remark-rehype';
+import remarkParse from 'remark-parse';
+import rehypeAttrs from 'rehype-attr';
 
 const htmlStr = unified()
   .use(remarkParse)
@@ -96,8 +104,8 @@ const htmlStr = unified()
 <summary>Example Code</summary>
 
 ```js
-const rehype = require('rehype')
-const rehypeAttrs = require('rehype-attr')
+import { rehype } from 'rehype';
+import rehypeAttrs from 'rehype-attr';
 
 const htmlStr = rehype()
   .data('settings', { fragment: true })
@@ -240,18 +248,11 @@ This is the `content`<!--rehype:style=color:pink;-->
 > <!--rehype:style=width:100px;-->
 > ```
 
-## Usage
-
-```bash
-npm i rehype-attr
-yarn add rehype-attr
-```
-
 ###### `HTML Example`
 
 ```js
-const rehype = require('rehype')
-const rehypeAttrs = require('rehype-attr')
+import { rehype } from 'rehype';
+import rehypeAttrs from 'rehype-attr';
 
 const htmlStr = rehype()
   .data('settings', { fragment: true })
@@ -268,12 +269,12 @@ Output:
 ###### `Markdown Example`
 
 ```js
-const unified = require("unified");
-const stringify = require('rehype-stringify')
-const rehypeRaw = require('rehype-raw')
-const remarkParse = require('remark-parse')
-const remark2rehype = require('remark-rehype')
-const rehypeAttrs = require('rehype-attr')
+import { unified } from 'unified';
+import stringify from 'rehype-stringify';
+import rehypeRaw from 'rehype-raw';
+import remarkParse from 'remark-parse';
+import remark2rehype from 'remark-rehype';
+import rehypeAttrs from 'rehype-attr';
 
 const mrkStr = `[github](https://github.com)<!--rehype:rel=external-->`
 const htmlStr = unified()

@@ -8,11 +8,8 @@
   "scripts": {
     "prepack": "npm run build",
     "start": "node lib/index.js",
-    "watch": "npm run watch:ts",
-    "watch:ts": "tsbb watch & npm run build:types -- --watch",
-    "build": "npm run build:ts && npm run build:types",
-    "build:ts": "tsbb build",
-    "build:types": "tsbb types",
+    "watch": "tsbb watch --no-esm --disable-babel",
+    "build": "tsbb build --no-esm --disable-babel",
     "test": "tsbb test",
     "coverage": "tsbb test --coverage"
   },
@@ -24,6 +21,7 @@
     "lib"
   ],
   "keywords": [
+    "attributes",
     "rehype",
     "markdown",
     "rehype-attr",
@@ -50,10 +48,10 @@
     "@types/jest": "27.0.1",
     "rehype": "12.0.0",
     "rehype-raw": "6.1.0",
-    "rehype-stringify": "9.0.1",
+    "rehype-stringify": "9.0.2",
     "remark-gfm": "2.0.0",
     "remark-parse": "10.0.0",
     "remark-rehype": "9.0.0",
-    "tsbb": "2.3.1"
+    "tsbb": "3.0.3"
   }
 }

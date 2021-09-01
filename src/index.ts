@@ -3,8 +3,6 @@ import { Parent, NodeData, Node } from 'unist';
 import visit from './visit'
 import { propertiesHandle, nextChild, prevChild, getCommentObject } from './utils';
 
-export type MdastTransformer = (tree: NodeData<Parent>) => void
-
 export type RehypeAttrsOptions = {
   /**
    * ## `data`
