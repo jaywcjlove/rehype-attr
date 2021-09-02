@@ -1,6 +1,6 @@
 {
   "name": "rehype-attr",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "New syntax to add attributes to Markdown.",
   "author": "Kenny Wong <wowohoo@qq.com>",
   "license": "MIT",
