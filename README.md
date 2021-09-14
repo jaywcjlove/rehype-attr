@@ -1,6 +1,8 @@
 rehype-attr
 ---
 
+
+[![Downloads](https://img.shields.io/npm/dm/rehype-attr.svg?style=flat)](https://www.npmjs.com/package/rehype-attr)
 [![NPM version](https://img.shields.io/npm/v/rehype-attr.svg?style=flat)](https://npmjs.org/package/rehype-attr)
 [![Build](https://github.com/jaywcjlove/rehype-attr/actions/workflows/ci.yml/badge.svg)](https://github.com/jaywcjlove/rehype-attr/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/jaywcjlove/rehype-attr/badge.svg?branch=main)](https://coveralls.io/github/jaywcjlove/rehype-attr?branch=main)
