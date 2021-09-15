@@ -1,6 +1,6 @@
 {
   "name": "rehype-attr",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "New syntax to add attributes to Markdown.",
   "author": "Kenny Wong <wowohoo@qq.com>",
   "license": "MIT",
@@ -10,8 +10,8 @@
   "scripts": {
     "prepack": "npm run build",
     "start": "node lib/index.js",
-    "watch": "tsbb watch --no-esm --disable-babel",
-    "build": "tsbb build --no-esm --disable-babel",
+    "watch": "tsbb watch --disable-babel",
+    "build": "tsbb build --disable-babel",
     "test": "tsbb test",
     "coverage": "tsbb test --coverage"
   },
