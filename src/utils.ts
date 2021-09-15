@@ -1,5 +1,5 @@
 import { Parent, NodeData } from 'unist';
-import { RehypeAttrsOptions } from './'
+import { RehypeAttrsOptions } from './index.js';
 
 export const getURLParameters = (url: string): Record<string, string | number | boolean> =>
 (url.match(/([^?=&]+)(=([^&]*))/g) || []).reduce(

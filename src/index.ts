@@ -1,7 +1,7 @@
-import { Plugin, Transformer } from 'unified'
+import { Plugin, Transformer } from 'unified';
 import { Parent, NodeData, Node } from 'unist';
-import visit from './visit'
-import { propertiesHandle, nextChild, prevChild, getCommentObject } from './utils';
+import visit from './visit.js';
+import { propertiesHandle, nextChild, prevChild, getCommentObject } from './utils.js';
 
 export type RehypeAttrsOptions = {
   /**
