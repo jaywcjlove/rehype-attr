@@ -11,7 +11,8 @@
     "prepack": "npm run build",
     "start": "node lib/index.js",
     "watch": "tsbb watch --disable-babel",
-    "build": "tsbb build --disable-babel",
+    "build": "tsbb build --disable-babel && npm run esm-fix",
+    "esm-fix": "tsc-esm-fix --target='lib' --ext='.js'",
     "test": "tsbb test",
     "coverage": "tsbb test --coverage"
   },
@@ -55,6 +56,7 @@
     "remark-gfm": "2.0.0",
     "remark-parse": "10.0.0",
     "remark-rehype": "9.0.0",
+    "tsc-esm-fix": "2.7.2",
     "tsbb": "3.2.1"
   }
 }
