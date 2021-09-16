@@ -15,6 +15,7 @@ jobs:
 
       - run: npm install
       - run: npm run build
+      - run: npm run type-check
       - run: npm run coverage
 
       - run: npm install @jsdevtools/npm-publish -g
