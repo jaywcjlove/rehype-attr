@@ -39,6 +39,10 @@
     "testMatch": [
       "<rootDir>/test/*.{ts,tsx}"
     ],
+    "coverageReporters": [
+      "lcov",
+      "json-summary"
+    ],
     "collectCoverageFrom": [
       "<rootDir>/src/*.{tsx,ts}"
     ],
