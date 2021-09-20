@@ -20,7 +20,6 @@ jobs:
 
       - run: npm i coverage-badges-cli -g
       - run: coverage-badges
-      - run: npm run doc
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
