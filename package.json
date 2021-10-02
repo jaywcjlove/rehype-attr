@@ -62,6 +62,6 @@
     "remark-parse": "10.0.0",
     "remark-rehype": "9.1.0",
     "tsc-esm-fix": "2.7.2",
-    "tsbb": "3.2.1"
+    "tsbb": "3.4.0"
   }
 }
