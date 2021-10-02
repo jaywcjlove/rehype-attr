@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>47/47</span>
+                <span class='fraction'>49/49</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>42/42</span>
+                <span class='fraction'>44/44</span>
             </div>
         
             
@@ -143,13 +143,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">42x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">45x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -173,9 +167,11 @@
 <span class="cline-any cline-yes">141x</span>
 <span class="cline-any cline-yes">141x</span>
 <span class="cline-any cline-yes">43x</span>
+<span class="cline-any cline-yes">43x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">98x</span>
 <span class="cline-any cline-yes">98x</span>
 <span class="cline-any cline-yes">65x</span>
 <span class="cline-any cline-yes">40x</span>
@@ -210,6 +206,10 @@
 <span class="cline-any cline-yes">42x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">44x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -217,51 +217,47 @@
 <span class="cline-any cline-yes">35x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Parent, NodeData } from 'unist';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Element, Comment, Literal, ElementContent, RootContent, Properties } from 'hast';
 import { RehypeAttrsOptions } from './';
 &nbsp;
 export const getURLParameters = (url: string): Record&lt;string, string | number | boolean&gt; =&gt;
 (url.match(/([^?=&amp;]+)(=([^&amp;]*))/g) || []).reduce(
   (a: Record&lt;string, string | number&gt;, v: string) =&gt; (
-    // eslint-disable-next-line no-sequences
     (a[v.slice(0, v.indexOf('='))] = v.slice(v.indexOf('=') + 1)), a
   ),
   {},
 );
 &nbsp;
-type CommentData = {
-  type?: 'comment',
-  value?: string,
-}
-&nbsp;
-export const prevChild = (data: NodeData&lt;Parent&gt;[] = [], index: number): CommentData | undefined =&gt; {
+export const prevChild = (data: Literal[] = [], index: number): Comment | undefined =&gt; {
   let i = index;
   while (i &gt; -1) {
     i--;
     if (!data[i]) return
     if ((data[i] &amp;&amp; data[i].value &amp;&amp; (data[i].value as string).replace(/(\n|\s)/g, '') !== '') || data[i].type !== 'text') {
       if (!/^rehype:/.test(data[i].value as string) || (data[i].type as string) !== 'comment') return;
-      return data[i] as unknown as CommentData;
+      return data[i] as unknown as Comment;
     }
   }
   return;
 }
 &nbsp;
-export const nextChild = (data: NodeData&lt;Parent&gt;[] = [], index: number, tagName?: string): CommentData | undefined =&gt; {
+export const nextChild = (data: RootContent[] | ElementContent[] = [], index: number, tagName?: string): ElementContent | undefined =&gt; {
   let i = index;
   while (i &lt; data.length) {
     i++;
     if (tagName) {
-      if (data[i] &amp;&amp; data[i].value &amp;&amp; (data[i].value as string).replace(/(\n|\s)/g, '') !== '' || data[i] &amp;&amp; (data[i].type as string) === 'element') {
-        return data[i].tagName === tagName ? data[i] as unknown as CommentData : undefined
+      const element = data[i] as Literal &amp; Element;
+      if (element &amp;&amp; element.value &amp;&amp; (element.value as string).replace(/(\n|\s)/g, '') !== '' || data[i] &amp;&amp; (data[i].type as string) === 'element') {
+        return element.tagName === tagName ? element : undefined
       }
     } else {
-      if (!data[i] || (data[i].type !== 'text' &amp;&amp; (data[i].type as string) !== 'comment') || (data[i].type == 'text' &amp;&amp; (data[i].value as string).replace(/(\n|\s)/g, '') !== '')) return
-      if ((data[i].type as string) === 'comment') {
-        if (!/^rehype:/.test(data[i].value as string)) return;
+      const element = data[i] as ElementContent &amp; Literal;
+      if (!element || (element.type !== 'text' &amp;&amp; (element.type as string) !== 'comment') || (element.type === 'text' &amp;&amp; (element.value as string).replace(/(\n|\s)/g, '') !== '')) return;
+      if ((element.type as string) === 'comment') {
+        if (!/^rehype:/.test(element.value as string)) return;
         const nextNode = nextChild(data, i, 'pre')
         if (nextNode) return;
-        return data[i] as unknown as CommentData;
+        return element;
       }
     }
   }
@@ -274,7 +270,7 @@ export const nextChild = (data: NodeData&lt;Parent&gt;[] = [], index: number, ta
  * @param index 当前数据所在的位置
  * @returns 返回 当前参数数据 Object，`{}`
  */
-export const getCommentObject = ({ value = '' }: CommentData): Record&lt;string, string | number | boolean | null&gt; =&gt; {
+export const getCommentObject = ({ value = '' }: Comment): Properties =&gt; {
   const param = getURLParameters(value.replace(/^rehype:/, ''));
   Object.keys(param).forEach((keyName: string) =&gt; {
     if (param[keyName] === 'true') {
@@ -290,7 +286,11 @@ export const getCommentObject = ({ value = '' }: CommentData): Record&lt;string,
   return param;
 }
 &nbsp;
-export const propertiesHandle = (defaultAttrs?: Record&lt;string, string&gt; | null, attrs?: Record&lt;string, string | number | boolean | null&gt; | null, type?: RehypeAttrsOptions['properties']) =&gt; {
+export type DataConfig = {
+  'data-config': Properties
+}
+&nbsp;
+export const propertiesHandle = (defaultAttrs?: Properties | null, attrs?: Properties, type?: RehypeAttrsOptions['properties']): Properties | DataConfig =&gt; {
   if (type === 'string') {
     return { ...defaultAttrs, 'data-config': JSON.stringify({ ...attrs, rehyp: true })}
   } else if (type === 'attr') {
@@ -304,7 +304,7 @@ export const propertiesHandle = (defaultAttrs?: Record&lt;string, string&gt; | n
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Oct 02 2021 09:20:13 GMT+0000 (Coordinated Universal Time)
+                at Sat Oct 02 2021 13:44:48 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="prettify.js"></script>

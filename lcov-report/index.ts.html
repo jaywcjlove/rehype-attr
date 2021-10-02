@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>19/19</span>
+                <span class='fraction'>20/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">96.29% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>23/23</span>
+                <span class='fraction'>26/27</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>19/19</span>
+                <span class='fraction'>20/20</span>
             </div>
         
             
@@ -140,7 +140,8 @@
 <a name='L81'></a><a href='#L81'>81</a>
 <a name='L82'></a><a href='#L82'>82</a>
 <a name='L83'></a><a href='#L83'>83</a>
-<a name='L84'></a><a href='#L84'>84</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -194,17 +195,18 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">45x</span>
 <span class="cline-any cline-yes">45x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">45x</span>
 <span class="cline-any cline-yes">91x</span>
-<span class="cline-any cline-yes">91x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -223,9 +225,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Plugin, Transformer } from 'unified';
-import { Parent, NodeData, Node } from 'unist';
-import visit from './visit';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Plugin } from 'unified';
+import { Root, Element, Comment, Properties, Literal } from 'hast';
+import { visit } from 'unist-util-visit';
 import { propertiesHandle, nextChild, prevChild, getCommentObject } from './utils';
 &nbsp;
 export type RehypeAttrsOptions = {
@@ -267,40 +269,41 @@ export type RehypeAttrsOptions = {
    * &lt;p title="Rehype Attrs"&gt;text&lt;/p&gt;
    * ```
    */
-  properties: 'data' | 'string' | 'attr'
+  properties: 'data' | 'string' | 'attr';
 }
 &nbsp;
 const defaultOptions: RehypeAttrsOptions = {
-  properties: 'data'
+  properties: 'data',
 }
 &nbsp;
-const rehypeAttrs: Plugin&lt;[RehypeAttrsOptions?]&gt; = (options): Transformer =&gt; {
+const rehypeAttrs: Plugin&lt;[RehypeAttrsOptions?], Root&gt; = (options) =&gt; {
   const opts = { ...defaultOptions, ...options }
-  return transformer;
-  function transformer(tree: Node&lt;NodeData&lt;Parent&gt;&gt;): void {
-    // ????? any
-    visit(tree as any, 'element', (node: NodeData&lt;Parent&gt;, index: number, parent: NodeData&lt;Parent&gt;) =&gt; {
-      const codeNode = node &amp;&amp; node.children &amp;&amp; Array.isArray(node.children) &amp;&amp; node.children[0]
-      if (node.tagName === 'pre' &amp;&amp; codeNode &amp;&amp; codeNode.tagName === 'code' &amp;&amp; Array.isArray(parent.children) &amp;&amp; parent.children.length &gt; 1) {
-        const child = prevChild(parent.children, index)
-        if (child) {
-          const attr = getCommentObject(child)
-          if (Object.keys(attr).length &gt; 0) {
-            node.properties = { ...(node.properties as any), ...{ 'data-type': 'rehyp' } }
-            codeNode.properties = propertiesHandle(codeNode.properties, attr, opts.properties)
+  return (tree) =&gt; {
+    visit(tree, 'element', (node, index, parent) =&gt; {
+      if (node.tagName === 'pre' &amp;&amp; node &amp;&amp; Array.isArray(node.children) &amp;&amp; parent &amp;&amp; Array.isArray(parent.children) &amp;&amp; parent.children.length &gt; 1) {
+        const firstChild = node.children[0] as Element;
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (firstChild &amp;&amp; firstChild.tagName === 'code' &amp;&amp; typeof index === 'number') {
+          const child = prevChild(parent.children as Literal[], index);
+          if (child) {
+            const attr = getCommentObject(child);
+            if (Object.keys(attr).length &gt; 0) {
+              node.properties = { ...node.properties, ...{ 'data-type': 'rehyp' } }
+              firstChild.properties = propertiesHandle(firstChild.properties, attr, opts.properties) as Properties
+            }
           }
         }
       }
-      if (/^(em|strong|b|a|i|p|pre|kbd|blockquote|h(1|2|3|4|5|6)|code|table|img|del|ul|ol)$/.test(node.tagName as string) &amp;&amp; Array.isArray(parent.children)) {
+&nbsp;
+      if (/^(em|strong|b|a|i|p|pre|kbd|blockquote|h(1|2|3|4|5|6)|code|table|img|del|ul|ol)$/.test(node.tagName) &amp;&amp; parent &amp;&amp; Array.isArray(parent.children) &amp;&amp; typeof index === 'number') {
         const child = nextChild(parent.children, index)
         if (child) {
-          const attr = getCommentObject(child)
+          const attr = getCommentObject(child as Comment)
           if (Object.keys(attr).length &gt; 0) {
-            node.properties = propertiesHandle(node.properties as any, attr, opts.properties)
+            node.properties = propertiesHandle(node.properties, attr, opts.properties) as Properties
           }
         }
       }
-    })
+    });
   }
 }
 &nbsp;
@@ -313,7 +316,7 @@ export default rehypeAttrs
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Oct 02 2021 09:20:13 GMT+0000 (Coordinated Universal Time)
+                at Sat Oct 02 2021 13:44:48 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="prettify.js"></script>
