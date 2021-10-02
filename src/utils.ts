@@ -1,48 +1,44 @@
-import { Parent, NodeData } from 'unist';
+import { Element, Comment, Literal, ElementContent, RootContent, Properties } from 'hast';
 import { RehypeAttrsOptions } from './';
 
 export const getURLParameters = (url: string): Record<string, string | number | boolean> =>
 (url.match(/([^?=&]+)(=([^&]*))/g) || []).reduce(
   (a: Record<string, string | number>, v: string) => (
-    // eslint-disable-next-line no-sequences
     (a[v.slice(0, v.indexOf('='))] = v.slice(v.indexOf('=') + 1)), a
   ),
   {},
 );
 
-type CommentData = {
-  type?: 'comment',
-  value?: string,
-}
-
-export const prevChild = (data: NodeData<Parent>[] = [], index: number): CommentData | undefined => {
+export const prevChild = (data: Literal[] = [], index: number): Comment | undefined => {
   let i = index;
   while (i > -1) {
     i--;
     if (!data[i]) return
     if ((data[i] && data[i].value && (data[i].value as string).replace(/(\n|\s)/g, '') !== '') || data[i].type !== 'text') {
       if (!/^rehype:/.test(data[i].value as string) || (data[i].type as string) !== 'comment') return;
-      return data[i] as unknown as CommentData;
+      return data[i] as unknown as Comment;
     }
   }
   return;
 }
 
-export const nextChild = (data: NodeData<Parent>[] = [], index: number, tagName?: string): CommentData | undefined => {
+export const nextChild = (data: RootContent[] | ElementContent[] = [], index: number, tagName?: string): ElementContent | undefined => {
   let i = index;
   while (i < data.length) {
     i++;
     if (tagName) {
-      if (data[i] && data[i].value && (data[i].value as string).replace(/(\n|\s)/g, '') !== '' || data[i] && (data[i].type as string) === 'element') {
-        return data[i].tagName === tagName ? data[i] as unknown as CommentData : undefined
+      const element = data[i] as Literal & Element;
+      if (element && element.value && (element.value as string).replace(/(\n|\s)/g, '') !== '' || data[i] && (data[i].type as string) === 'element') {
+        return element.tagName === tagName ? element : undefined
       }
     } else {
-      if (!data[i] || (data[i].type !== 'text' && (data[i].type as string) !== 'comment') || (data[i].type == 'text' && (data[i].value as string).replace(/(\n|\s)/g, '') !== '')) return
-      if ((data[i].type as string) === 'comment') {
-        if (!/^rehype:/.test(data[i].value as string)) return;
+      const element = data[i] as ElementContent & Literal;
+      if (!element || (element.type !== 'text' && (element.type as string) !== 'comment') || (element.type === 'text' && (element.value as string).replace(/(\n|\s)/g, '') !== '')) return;
+      if ((element.type as string) === 'comment') {
+        if (!/^rehype:/.test(element.value as string)) return;
         const nextNode = nextChild(data, i, 'pre')
         if (nextNode) return;
-        return data[i] as unknown as CommentData;
+        return element;
       }
     }
   }
@@ -55,7 +51,7 @@ export const nextChild = (data: NodeData<Parent>[] = [], index: number, tagName?
  * @param index 当前数据所在的位置
  * @returns 返回 当前参数数据 Object，`{}`
  */
-export const getCommentObject = ({ value = '' }: CommentData): Record<string, string | number | boolean | null> => {
+export const getCommentObject = ({ value = '' }: Comment): Properties => {
   const param = getURLParameters(value.replace(/^rehype:/, ''));
   Object.keys(param).forEach((keyName: string) => {
     if (param[keyName] === 'true') {
@@ -71,7 +67,11 @@ export const getCommentObject = ({ value = '' }: CommentData): Record<string, st
   return param;
 }
 
-export const propertiesHandle = (defaultAttrs?: Record<string, string> | null, attrs?: Record<string, string | number | boolean | null> | null, type?: RehypeAttrsOptions['properties']) => {
+export type DataConfig = {
+  'data-config': Properties
+}
+
+export const propertiesHandle = (defaultAttrs?: Properties | null, attrs?: Properties, type?: RehypeAttrsOptions['properties']): Properties | DataConfig => {
   if (type === 'string') {
     return { ...defaultAttrs, 'data-config': JSON.stringify({ ...attrs, rehyp: true })}
   } else if (type === 'attr') {
