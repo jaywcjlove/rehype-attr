@@ -1,5 +1,5 @@
 rehype-attr
----
+===
 
 
 [![Downloads](https://img.shields.io/npm/dm/rehype-attr.svg?style=flat)](https://www.npmjs.com/package/rehype-attr)
