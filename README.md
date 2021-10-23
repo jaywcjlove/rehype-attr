@@ -307,6 +307,7 @@ Output:
 
 ## Related
 
+- [`rehype-video`](https://github.com/jaywcjlove/rehype-video) Add improved video syntax: links to `.mp4` and `.mov` turn into videos.
 - [`rehype-rewrite`](https://github.com/jaywcjlove/rehype-rewrite) Rewrite element with rehype.
 - [`rehypejs`](https://github.com/rehypejs/rehype) HTML processor powered by plugins part of the @unifiedjs collective
 - [`remark-parse`](https://www.npmjs.com/package/remark-parse) remark plugin to parse Markdown
