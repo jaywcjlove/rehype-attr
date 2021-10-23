@@ -22,7 +22,7 @@ npm install rehype-attr
 
 ### `Links`
 
-###### `HTML Example`
+#### `HTML Example`
 
 ```html
 <a href="https://github.com">github</a><!--rehype:rel=external&style=color:pink;&data-name=kenny-->
@@ -49,7 +49,7 @@ const htmlStr = rehype()
 
 </details>
 
-###### `Markdown Example`
+#### `Markdown Example`
 
 ```markdown
 [github](https://github.com)<!--rehype:rel=external-->
@@ -91,7 +91,7 @@ const htmlStr = unified()
 
 ### `Header`
 
-###### `HTML Example`
+#### `HTML Example`
 
 ```html
 <h1>This is a title</h1><!--rehype:style=color:pink;-->
@@ -118,7 +118,7 @@ const htmlStr = rehype()
 
 </details>
 
-###### `Markdown Example`
+#### `Markdown Example`
 
 ```markdown
 This is a title
@@ -143,7 +143,7 @@ This is a title
 
 ### `Strong`
 
-###### `HTML Example`
+#### `HTML Example`
 
 ```html
 This is a <strong>Unicorn</strong><!--rehype:style=color: grey-->
@@ -154,7 +154,7 @@ This is a <strong>Unicorn</strong><!--rehype:style=color: grey-->
 > This is a <strong style="color: grey">Unicorn</strong>
 > ```
 
-###### `Markdown Example`
+#### `Markdown Example`
 
 ```markdown
 This is a **Unicorn**<!--rehype:style=color: grey-->
@@ -167,7 +167,7 @@ This is a **Unicorn**<!--rehype:style=color: grey-->
 
 ### `Emphasis`
 
-###### `HTML Example`
+#### `HTML Example`
 
 ```html
 Npm stand for <em>node</em><!--rehype:style=color: red--> packet manager.
@@ -178,7 +178,7 @@ Npm stand for <em>node</em><!--rehype:style=color: red--> packet manager.
 > Npm stand for <em style="color: red">node</em> packet manager.
 > ```
 
-###### `Markdown Example`
+#### `Markdown Example`
 
 ```markdown
 Npm stand for *node* <!--rehype:style=color: red--> packet manager.
@@ -211,7 +211,7 @@ console.log('')
 
 ### `Inlne Code`
 
-###### `HTML Example`
+#### `HTML Example`
 
 ```html
 This is the <code>content</code><!--rehype:style=color:pink;-->
@@ -222,7 +222,7 @@ This is the <code>content</code><!--rehype:style=color:pink;-->
 > This is the <code style="color:pink;">content</code>
 > ```
 
-###### `Markdown Example`
+#### `Markdown Example`
 
 ```markdown
 This is the `content`<!--rehype:style=color:pink;-->
@@ -250,7 +250,7 @@ This is the `content`<!--rehype:style=color:pink;-->
 > <!--rehype:style=width:100px;-->
 > ```
 
-###### `HTML Example`
+#### `HTML Example`
 
 ```js
 import { rehype } from 'rehype';
@@ -268,7 +268,7 @@ Output:
 <h1 style="color:pink;">This is a title</h1>
 ```
 
-###### `Markdown Example`
+#### `Markdown Example`
 
 ```js
 import { unified } from 'unified';
@@ -300,7 +300,7 @@ Output:
 
 ## Options
 
-#### `properties`
+### `properties`
 
 > Default Value: `data`  
 > Value: `data`, `string`, `attr`
