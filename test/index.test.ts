@@ -77,6 +77,23 @@ describe('rehype-attr function test case', () => {
 
 describe('rehype-attr test case', () => {
   it('default codeBlockParames=false', async () => {
+    const mrkStr2 = "### title\n<!--rehype:title=title3-->\n```js\nconsole.log('')\n```"
+    const expected = `<h3 title="title3">title</h3>\n<!--rehype:title=title3-->\n<pre><code class="language-js">console.log('')\n</code></pre>`
+    const htmlStr = unified()
+      .use(remarkParse)
+      .use(remark2rehype, { allowDangerousHtml: true })
+      .use(rehypeRaw)
+      .use(rehypeAttrs, {
+        properties: 'attr',
+        codeBlockParames: false
+      })
+      .use(stringify)
+      .processSync(mrkStr2)
+      .toString()
+      expect(htmlStr).toEqual(expected);
+  });
+
+  it('default codeBlockParames=false', async () => {
     const expected = `<!--rehype:title=Rehype Attrs-->\n<pre><code class="language-js">console.log('')\n</code></pre>`
     const htmlStr = unified()
       .use(remarkParse)
@@ -88,6 +105,7 @@ describe('rehype-attr test case', () => {
       .toString()
       expect(htmlStr).toEqual(expected);
   });
+
   it('default options="data"', async () => {
     const expected = `<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" data-config="[object Object]">console.log('')\n</code></pre>`
     const htmlStr = unified()

@@ -22,8 +22,9 @@ export const prevChild = (data: Literal[] = [], index: number): Comment | undefi
   return;
 }
 
-export const nextChild = (data: RootContent[] | ElementContent[] = [], index: number, tagName?: string): ElementContent | undefined => {
+export const nextChild = (data: RootContent[] | ElementContent[] = [], index: number, tagName?: string, codeBlockParames?: boolean): ElementContent | undefined => {
   let i = index;
+
   while (i < data.length) {
     i++;
     if (tagName) {
@@ -33,12 +34,17 @@ export const nextChild = (data: RootContent[] | ElementContent[] = [], index: nu
       }
     } else {
       const element = data[i] as ElementContent & Literal;
-      if (!element || (element.type !== 'text' && (element.type as string) !== 'comment') || (element.type === 'text' && (element.value as string).replace(/(\n|\s)/g, '') !== '')) return;
-      if ((element.type as string) === 'comment') {
+      if (!element || element.type === 'element') return;
+      if (element.type === 'text' && element.value.replace(/(\n|\s)/g, '') !== '') return;
+      if (element?.type === 'comment') {
         if (!/^rehype:/.test(element.value as string)) return;
-        const nextNode = nextChild(data, i, 'pre')
-        if (nextNode) return;
-        return element;
+        if (codeBlockParames) {
+          const nextNode = nextChild(data, i, 'pre', codeBlockParames)
+          if (nextNode) return;
+          return element;
+        } else {
+          return element;
+        }
       }
     }
   }

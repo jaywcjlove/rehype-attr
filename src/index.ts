@@ -67,7 +67,7 @@ const rehypeAttrs: Plugin<[RehypeAttrsOptions?], Root> = (options = {}) => {
       }
 
       if (/^(em|strong|b|a|i|p|pre|kbd|blockquote|h(1|2|3|4|5|6)|code|table|img|del|ul|ol)$/.test(node.tagName) && parent && Array.isArray(parent.children) && typeof index === 'number') {
-        const child = nextChild(parent.children, index)
+        const child = nextChild(parent.children, index, '', codeBlockParames)
         if (child) {
           const attr = getCommentObject(child as Comment)
           if (Object.keys(attr).length > 0) {
