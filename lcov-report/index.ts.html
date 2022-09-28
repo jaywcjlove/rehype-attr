@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>20/20</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.29% </span>
+                <span class="strong">96.77% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>26/27</span>
+                <span class='fraction'>30/31</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>20/20</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -146,8 +146,10 @@
 <a name='L81'></a><a href='#L81'>81</a>
 <a name='L82'></a><a href='#L82'>82</a>
 <a name='L83'></a><a href='#L83'>83</a>
-<a name='L84'></a><a href='#L84'>84</a>
-<a name='L85'></a><a href='#L85'>85</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L84'></a><a href='#L84'>84</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -195,14 +197,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">46x</span>
-<span class="cline-any cline-yes">46x</span>
-<span class="cline-any cline-yes">46x</span>
-<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-yes">50x</span>
+<span class="cline-any cline-yes">50x</span>
+<span class="cline-any cline-yes">50x</span>
+<span class="cline-any cline-yes">94x</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">12x</span>
@@ -216,12 +214,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">89x</span>
-<span class="cline-any cline-yes">70x</span>
-<span class="cline-any cline-yes">70x</span>
-<span class="cline-any cline-yes">33x</span>
-<span class="cline-any cline-yes">33x</span>
-<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-yes">94x</span>
+<span class="cline-any cline-yes">75x</span>
+<span class="cline-any cline-yes">75x</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">34x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -244,9 +242,7 @@ export type RehypeAttrsOptions = {
    * text
    * &lt;!--rehype:title=Rehype Attrs&amp;abc=2--&gt;
    * ```
-   * 
-   * ⇣⇣⇣⇣⇣⇣
-   * 
+   * 👇👇👇👇👇
    * ```html
    * &lt;p data-config="data-config='[object Object]'"&gt;text&lt;/p&gt;
    * ```
@@ -258,7 +254,7 @@ export type RehypeAttrsOptions = {
    * &lt;!--rehype:title=Rehype Attrs--&gt;
    * ```
    * 
-   * ⇣⇣⇣⇣⇣⇣
+   * 👇👇👇👇👇
    * 
    * ```html
    * &lt;p data-config="{&amp;#x22;title&amp;#x22;:&amp;#x22;Rehype Attrs&amp;#x22;,&amp;#x22;rehyp&amp;#x22;:true}"&gt;text&lt;/p&gt;
@@ -270,23 +266,24 @@ export type RehypeAttrsOptions = {
    * text
    * &lt;!--rehype:title=Rehype Attrs--&gt;
    * ```
-   * ⇣⇣⇣⇣⇣⇣
+   * 👇👇👇👇👇
    * ```html
    * &lt;p title="Rehype Attrs"&gt;text&lt;/p&gt;
    * ```
+   * @default `data`
    */
-  properties: 'data' | 'string' | 'attr';
+  properties?: 'data' | 'string' | 'attr';
+  /**
+   * Code block passing parameters
+   */
+  codeBlockParames?: boolean;
 }
 &nbsp;
-const defaultOptions: RehypeAttrsOptions = {
-  properties: 'data',
-}
-&nbsp;
-const rehypeAttrs: Plugin&lt;[RehypeAttrsOptions?], Root&gt; = (options) =&gt; {
-  const opts = { ...defaultOptions, ...options }
+const rehypeAttrs: Plugin&lt;[RehypeAttrsOptions?], Root&gt; = (options = {}) =&gt; {
+  const { properties = 'data', codeBlockParames = true } = options;
   return (tree) =&gt; {
     visit(tree, 'element', (node, index, parent) =&gt; {
-      if (node.tagName === 'pre' &amp;&amp; node &amp;&amp; Array.isArray(node.children) &amp;&amp; parent &amp;&amp; Array.isArray(parent.children) &amp;&amp; parent.children.length &gt; 1) {
+      if (codeBlockParames &amp;&amp; node.tagName === 'pre' &amp;&amp; node &amp;&amp; Array.isArray(node.children) &amp;&amp; parent &amp;&amp; Array.isArray(parent.children) &amp;&amp; parent.children.length &gt; 1) {
         const firstChild = node.children[0] as Element;
         <span class="missing-if-branch" title="else path not taken" >E</span>if (firstChild &amp;&amp; firstChild.tagName === 'code' &amp;&amp; typeof index === 'number') {
           const child = prevChild(parent.children as Literal[], index);
@@ -294,7 +291,7 @@ const rehypeAttrs: Plugin&lt;[RehypeAttrsOptions?], Root&gt; = (options) =&gt; {
             const attr = getCommentObject(child);
             if (Object.keys(attr).length &gt; 0) {
               node.properties = { ...node.properties, ...{ 'data-type': 'rehyp' } }
-              firstChild.properties = propertiesHandle(firstChild.properties, attr, opts.properties) as Properties
+              firstChild.properties = propertiesHandle(firstChild.properties, attr, properties) as Properties
             }
           }
         }
@@ -305,7 +302,7 @@ const rehypeAttrs: Plugin&lt;[RehypeAttrsOptions?], Root&gt; = (options) =&gt; {
         if (child) {
           const attr = getCommentObject(child as Comment)
           if (Object.keys(attr).length &gt; 0) {
-            node.properties = propertiesHandle(node.properties, attr, opts.properties) as Properties
+            node.properties = propertiesHandle(node.properties, attr, properties) as Properties
           }
         }
       }
@@ -322,7 +319,7 @@ export default rehypeAttrs
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-09-28T07:55:47.250Z
+                at 2022-09-28T15:32:08.575Z
             </div>
         <script src="prettify.js"></script>
         <script>
