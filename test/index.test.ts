@@ -76,6 +76,18 @@ describe('rehype-attr function test case', () => {
 })
 
 describe('rehype-attr test case', () => {
+  it('default codeBlockParames=false', async () => {
+    const expected = `<!--rehype:title=Rehype Attrs-->\n<pre><code class="language-js">console.log('')\n</code></pre>`
+    const htmlStr = unified()
+      .use(remarkParse)
+      .use(remark2rehype, { allowDangerousHtml: true })
+      .use(rehypeRaw)
+      .use(rehypeAttrs, { codeBlockParames: false })
+      .use(stringify)
+      .processSync(mrkStr)
+      .toString()
+      expect(htmlStr).toEqual(expected);
+  });
   it('default options="data"', async () => {
     const expected = `<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" data-config="[object Object]">console.log('')\n</code></pre>`
     const htmlStr = unified()
@@ -297,6 +309,11 @@ describe('rehype-attr test case', () => {
       markdown: '#### This is a title\n<!--rehype:style=background-color: rgb(235 217 78/var(--bg-opacity));-->',
       expected: '<h4 style="background-color: rgb(235 217 78/var(--bg-opacity));">This is a title</h4>\n<!--rehype:style=background-color: rgb(235 217 78/var(--bg-opacity));-->',
     },
+    {
+      title: 'options="attr" - test identifier',
+      markdown: '#### This is a title\n<!--rehype:className=test test2-->',
+      expected: '<h4 class="test test2">This is a title</h4>\n<!--rehype:className=test test2-->',
+    },
   ].forEach((data, idx) => {
     it(data.title, async () => {
       const htmlStr = unified()
@@ -334,6 +351,16 @@ describe('rehype-attr test case', () => {
 
 
   [
+    {
+      title: 'options="attr" - <p>',
+      markdown: '<p class="hello">text</p><!--rehype:className=text-->',
+      expected: '<p class="text">text</p><!--rehype:className=text-->',
+    },
+    {
+      title: 'options="attr" - <p> ???????????xxxxxxx',
+      markdown: '<p class="hello">text</p><!--rehype:class=text-->',
+      expected: '<p class="hello" class="text">text</p><!--rehype:class=text-->',
+    },
     {
       title: 'options="attr" - <p>',
       markdown: '<p>text</p><!--rehype:id=text-->',

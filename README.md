@@ -265,6 +265,7 @@ const htmlStr = rehype()
 ```
 
 Output: 
+
 ```html
 <h1 style="color:pink;">This is a title</h1>
 ```
@@ -305,6 +306,12 @@ Output:
 
 > Default Value: `data`  
 > Value: `data`, `string`, `attr`
+
+### `codeBlockParames`
+
+Code block passing parameters
+
+> Default Value: `true`  
 
 ## Related
 
