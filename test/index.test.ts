@@ -67,10 +67,10 @@ describe('rehype-attr function test case', () => {
     expect(utils.propertiesHandle(null, {}, 'string')).toEqual({
       'data-config': '{\"rehyp\":true}'
     });
-    expect(utils.propertiesHandle(null, null, 'string')).toEqual({
+    expect(utils.propertiesHandle(null, (null as unknown as undefined), 'string')).toEqual({
       'data-config': '{\"rehyp\":true}'
     });
-    expect(utils.propertiesHandle(null, null, 'attr')).toEqual({});
+    expect(utils.propertiesHandle(null, (null as unknown as undefined), 'attr')).toEqual({});
     expect(utils.propertiesHandle(null, { a: 1 }, 'attr')).toEqual({ a: 1 });
   });
 })
@@ -123,7 +123,7 @@ describe('rehype-attr test case', () => {
     }, {
       title: 'options="attr" - Table 2 `\\n\\n` ???',
       markdown: '| Property | Description |\n |---- |---- |\n | 1 | 2 |\n<!--rehype:border=1-->',
-      expected: '<table><thead><tr><th>Property</th><th>Description</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr><tr><td><!--rehype:border=1--></td><td></td></tr></tbody></table>',
+      expected: '<table border="1"><thead><tr><th>Property</th><th>Description</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table>\n<!--rehype:border=1-->',
     }
   ].forEach((data, idx) => {
     it(data.title, async () => {
@@ -291,6 +291,11 @@ describe('rehype-attr test case', () => {
       title: 'options="attr" - test identifier',
       markdown: '#### This is a title\n<!--wwww:data-bool=true',
       expected: '<h4>This is a title</h4>\n',
+    },
+    {
+      title: 'options="attr" - test identifier',
+      markdown: '#### This is a title\n<!--rehype:style=background-color: rgb(235 217 78/var(--bg-opacity));-->',
+      expected: '<h4 style="background-color: rgb(235 217 78/var(--bg-opacity));">This is a title</h4>\n<!--rehype:style=background-color: rgb(235 217 78/var(--bg-opacity));-->',
     },
   ].forEach((data, idx) => {
     it(data.title, async () => {
