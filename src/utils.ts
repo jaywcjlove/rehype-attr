@@ -24,7 +24,6 @@ export const prevChild = (data: Literal[] = [], index: number): Comment | undefi
 
 export const nextChild = (data: RootContent[] | ElementContent[] = [], index: number, tagName?: string, codeBlockParames?: boolean): ElementContent | undefined => {
   let i = index;
-
   while (i < data.length) {
     i++;
     if (tagName) {
@@ -36,13 +35,17 @@ export const nextChild = (data: RootContent[] | ElementContent[] = [], index: nu
       const element = data[i] as ElementContent & Literal;
       if (!element || element.type === 'element') return;
       if (element.type === 'text' && element.value.replace(/(\n|\s)/g, '') !== '') return;
-      if (element?.type === 'comment') {
-        if (!/^rehype:/.test(element.value as string)) return;
+      if (/^(comment|raw)$/ig.test(element?.type)) {
+        if (!/^rehype:/.test(element.value?.replace(/^(\s+)?<!--(.*?)-->/, '$2') || '')) {
+          return
+        };
         if (codeBlockParames) {
           const nextNode = nextChild(data, i, 'pre', codeBlockParames)
           if (nextNode) return;
+          element.value = element.value?.replace(/^(\n|\s)+/, '')
           return element;
         } else {
+          element.value = element.value?.replace(/^(\n|\s)+/, '')
           return element;
         }
       }
@@ -58,7 +61,7 @@ export const nextChild = (data: RootContent[] | ElementContent[] = [], index: nu
  * @returns 返回 当前参数数据 Object，`{}`
  */
 export const getCommentObject = ({ value = '' }: Comment): Properties => {
-  const param = getURLParameters(value.replace(/^rehype:/, ''));
+  const param = getURLParameters(value.replace(/^<!--(.*?)-->/, '$1').replace(/^rehype:/, ''));
   Object.keys(param).forEach((keyName: string) => {
     if (param[keyName] === 'true') {
       param[keyName] = true;

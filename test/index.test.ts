@@ -12,6 +12,35 @@ import * as utils from '../src/utils';
 
 const mrkStr = "<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
 
+describe('rehype-attr type raw test case', () => {
+  [
+    {
+      title: 'options="attr" - Header <h1> `#`',
+      markdown: '# This is a title\n <!--rehype:style=color:pink;-->',
+      expected: '<h1 style="color:pink;">This is a title</h1>\n&#x3C;!--rehype:style=color:pink;-->',
+    },
+    {
+      title: 'options="attr" - Code - not config 7',
+      markdown: '<!--rehype:-->\n```js\nconsole.log("")\n```',
+      expected: '&#x3C;!--rehype:-->\n<pre><code class="language-js">console.log("")\n</code></pre>',
+    },
+  ].forEach((data, idx) => {
+    it(data.title, async () => {
+      const htmlStr = unified()
+        .use(remarkParse)
+        .use(remark2rehype, { allowDangerousHtml: true })
+        // _____⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️________
+        // .use(rehypeRaw)
+        .use(rehypeAttrs, { properties: 'attr' })
+        .use(stringify)
+        .processSync(data.markdown)
+        .toString()
+        expect(htmlStr).toEqual(data.expected);
+    });
+  });
+
+})
+
 describe('rehype-attr function test case', () => {
   it('visit', async () => {
     const node: NodeData<Parent> = {
