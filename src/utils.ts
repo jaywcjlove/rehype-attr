@@ -1,13 +1,13 @@
 import { Element, Comment, Literal, ElementContent, RootContent, Properties } from 'hast';
 import { RehypeAttrsOptions } from './';
 
-export const getURLParameters = (url: string): Record<string, string | number | boolean> =>
-(url.match(/([^?=&]+)(=([^&]*))/g) || []).reduce(
-  (a: Record<string, string | number>, v: string) => (
-    (a[v.slice(0, v.indexOf('='))] = v.slice(v.indexOf('=') + 1)), a
-  ),
-  {},
-);
+export const getURLParameters = (url: string = '') =>
+  ((url.match(/([^?=&]+)(=([^&]*))/g) || []) as string[]).reduce(
+      (a: Record<string, string | number | boolean>, v: string) => (
+        (a[v.slice(0, v.indexOf('=')) as keyof typeof a] = v.slice(v.indexOf('=') + 1)), a
+      ),
+      {}
+    )
 
 export const prevChild = (data: Literal[] = [], index: number): Comment | undefined => {
   let i = index;
@@ -35,8 +35,8 @@ export const nextChild = (data: RootContent[] | ElementContent[] = [], index: nu
       const element = data[i] as ElementContent & Literal;
       if (!element || element.type === 'element') return;
       if (element.type === 'text' && element.value.replace(/(\n|\s)/g, '') !== '') return;
-      if (/^(comment|raw)$/ig.test(element?.type)) {
-        if (!/^rehype:/.test(element.value?.replace(/^(\s+)?<!--(.*?)-->/, '$2') || '')) {
+      if (element.type && /^(comment|raw)$/ig.test(element.type)) {
+        if (element.value && !/^rehype:/.test(element.value.replace(/^(\s+)?<!--(.*?)-->/, '$2') || '')) {
           return
         };
         if (codeBlockParames) {
