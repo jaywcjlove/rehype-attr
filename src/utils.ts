@@ -42,10 +42,10 @@ export const nextChild = (data: RootContent[] | ElementContent[] = [], index: nu
         if (codeBlockParames) {
           const nextNode = nextChild(data, i, 'pre', codeBlockParames)
           if (nextNode) return;
-          element.value = element.value?.replace(/^(\n|\s)+/, '')
+          element.value = (element.value || '').replace(/^(\n|\s)+/, '')
           return element;
         } else {
-          element.value = element.value?.replace(/^(\n|\s)+/, '')
+          element.value = (element.value || '').replace(/^(\n|\s)+/, '')
           return element;
         }
       }
