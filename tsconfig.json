@@ -11,6 +11,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "stripInternal": true,
+    "skipLibCheck": true,
     "esModuleInterop": false,
     "noImplicitAny": true,
     "outDir": "lib",

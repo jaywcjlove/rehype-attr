@@ -7,7 +7,7 @@ import rehypeRaw from 'rehype-raw';
 import remark2rehype from 'remark-rehype';
 import remarkParse from 'remark-parse';
 import stringify from 'rehype-stringify';
-import rehypeAttrs from '../src';
+import rehypeAttrs from '../src/index';
 import * as utils from '../src/utils';
 
 const mrkStr = "<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
