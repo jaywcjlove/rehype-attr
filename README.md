@@ -324,6 +324,16 @@ Code block passing parameters
 - [`rehype-raw`](https://www.npmjs.com/package/rehype-raw) rehype plugin to reparse the tree (and raw nodes)
 - [`rehype-stringify`](https://www.npmjs.com/package/rehype-stringify) rehype plugin to serialize HTML
 
+## Contributors
+
+As always, thanks to our amazing contributors!
+
+<a href="https://github.com/jaywcjlove/rehype-attr/graphs/contributors">
+  <img src="https://jaywcjlove.github.io/rehype-attr/CONTRIBUTORS.svg" />
+</a>
+
+Made with [github-action-contributors](https://github.com/jaywcjlove/github-action-contributors).
+
 ## License
 
 MIT © [Kenny Wong](https://github.com/jaywcjlove)
