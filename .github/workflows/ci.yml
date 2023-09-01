@@ -19,12 +19,21 @@ jobs:
       - run: npm run type-check
       - run: npm run coverage
 
+      - name: Create idoc config
+        run: |
+          cat > idoc.yml << EOF
+          site: "rehype-attr {{version}}"
+          menus:
+            Home: index.html
+          EOF
+
+      - run: npm install idoc@1.26.6 -g
+      - run: idoc
+
       - uses: jaywcjlove/coverage-badges-cli@main
-
-      - run: npm i coverage-badges-cli markdown-to-html-cli -g
-      - run: coverage-badges
-      - run: markdown-to-html --output coverage/index.html --github-corners https://github.com/jaywcjlove/rehype-attr
-
+        with:
+          output: dist/badges.svg
+    
       - name: Create Tag
         id: create_tag
         uses: jaywcjlove/create-tag-action@main
@@ -35,12 +44,19 @@ jobs:
         id: tag_version
         uses: jaywcjlove/changelog-generator@main
 
+      - name: Generate Contributors Images
+        uses: jaywcjlove/github-action-contributors@main
+        with:
+          filter-author: (renovate\[bot\]|renovate-bot|dependabot\[bot\])
+          output: dist/CONTRIBUTORS.svg
+          avatarSize: 42
+  
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           commit_message: ${{steps.tag_version.outputs.tag}} ${{ github.event.head_commit.message }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./coverage
+          publish_dir: ./dist
 
       - name: Generate Changelog
         id: changelog
