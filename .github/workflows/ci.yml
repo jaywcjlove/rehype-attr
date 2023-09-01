@@ -24,10 +24,10 @@ jobs:
           cat > idoc.yml << EOF
           site: "rehype-attr {{version}}"
           menus:
-            Home: index.html
+            Attr: index.html
+            Ignore: https://jaywcjlove.github.io/rehype-ignore/
             Rewrite: https://jaywcjlove.github.io/rehype-rewrite/
             Video: https://jaywcjlove.github.io/rehype-video/
-            Ignore: https://jaywcjlove.github.io/rehype-ignore/
           EOF
 
       - run: cp -rp ./coverage/lcov-report dist
