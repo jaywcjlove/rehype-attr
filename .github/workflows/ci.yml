@@ -27,6 +27,7 @@ jobs:
             Home: index.html
           EOF
 
+      - run: cp -rp ./coverage/lcov-report dist
       - run: npm install idoc@1.26.6 -g
       - run: idoc
 
