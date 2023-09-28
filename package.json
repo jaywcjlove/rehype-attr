@@ -53,7 +53,7 @@
     "rehype-raw": "~7.0.0",
     "rehype-stringify": "~10.0.0",
     "remark-gfm": "~4.0.0",
-    "remark-parse": "~10.0.1",
+    "remark-parse": "~11.0.0",
     "remark-rehype": "~11.0.0",
     "tsc-esm-fix": "~2.20.0",
     "tsbb": "^4.0.5"
