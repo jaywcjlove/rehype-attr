@@ -33,9 +33,9 @@ jobs:
             Video: https://jaywcjlove.github.io/rehype-video/
           EOF
 
-      - run: cp -rp ./coverage/lcov-report dist
       - run: npm install idoc@1.26.6 -g
       - run: idoc
+      - run: cp -rp ./coverage/lcov-report dist
 
       - uses: jaywcjlove/coverage-badges-cli@main
         with:
