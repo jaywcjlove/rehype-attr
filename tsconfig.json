@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ES2020",
-    "moduleResolution": "node",
+    "target": "ES2022",
+    "module": "Node16",
     "sourceMap": true,
     "declaration": true,
     "noFallthroughCasesInSwitch": true,
