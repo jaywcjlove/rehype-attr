@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "unified": "~11.0.0",
-    "unist-util-visit": "~4.1.0"
+    "unist-util-visit": "~5.0.0"
   },
   "devDependencies": {
     "rehype": "~12.0.0",
