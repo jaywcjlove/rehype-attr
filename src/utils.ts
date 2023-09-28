@@ -1,5 +1,5 @@
-import { Element, Comment, Literal, ElementContent, RootContent, Properties } from 'hast';
-import { RehypeAttrsOptions } from './index';
+import type { Element, Comment, Literal, ElementContent, RootContent, Properties } from 'hast';
+import type { RehypeAttrsOptions } from './index.js';
 
 export const getURLParameters = (url: string = '') =>
   ((url.match(/([^?=&]+)(=([^&]*))/g) || []) as string[]).reduce(

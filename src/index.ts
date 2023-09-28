@@ -1,7 +1,7 @@
-import { Plugin } from 'unified';
-import { Root, Element, Comment, Properties, Literal } from 'hast';
+import type { Plugin } from 'unified';
+import type { Root, Element, Comment, Properties, Literal } from 'hast';
 import { visit } from 'unist-util-visit';
-import { propertiesHandle, nextChild, prevChild, getCommentObject } from './utils';
+import { propertiesHandle, nextChild, prevChild, getCommentObject } from './utils.js';
 
 export type RehypeAttrsOptions = {
   /**

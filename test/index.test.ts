@@ -1,14 +1,13 @@
 import { unified, Plugin } from 'unified';
 import { Comment, Literal, ElementContent } from 'hast';
-import { Parent, NodeData } from 'unist';
 import { rehype } from 'rehype';
 import gfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import remark2rehype from 'remark-rehype';
 import remarkParse from 'remark-parse';
 import stringify from 'rehype-stringify';
-import rehypeAttrs from '../src/index';
-import * as utils from '../src/utils';
+import rehypeAttrs from '../src/index.js';
+import * as utils from '../src/utils.js';
 
 const mrkStr = "<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```"
 
@@ -42,24 +41,6 @@ describe('rehype-attr type raw test case', () => {
 })
 
 describe('rehype-attr function test case', () => {
-  it('visit', async () => {
-    const node: NodeData<Parent> = {
-      "type": "root",
-      "children": [
-        {
-          "type": "element",
-          "tagName": "p",
-          "properties": {},
-          "children": [
-            { "type": "text", "value": "This is a " },
-            { "type": "element", "tagName": "del", "properties": {}, "children": [ { "type": "text", "value": "title" } ] },
-            { "type": "comment", "value": "rehype:style=color:pink;" }
-          ]
-        }
-      ],
-      "data": { "quirksMode": false }
-    }
-  });
   it('getCommentObject', async () => {
     expect(utils.getCommentObject({} as Comment)).toEqual({ });
     expect(utils.getCommentObject({ value: 'rehype:title=Rehype Attrs' } as Comment)).toEqual({ title: 'Rehype Attrs' });

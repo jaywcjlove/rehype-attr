@@ -12,8 +12,7 @@
     "prepack": "npm run build",
     "start": "node lib/index.js",
     "watch": "tsbb watch",
-    "build": "tsbb build && npm run esm-fix",
-    "esm-fix": "tsc-esm-fix --target='lib' --ext='.js'",
+    "build": "tsbb build",
     "type-check": "tsc --noEmit",
     "test": "tsbb test",
     "coverage": "tsbb test --coverage"
@@ -37,12 +36,16 @@
     "unified"
   ],
   "jest": {
+    "extensionsToTreatAsEsm": [".ts"],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
     "transformIgnorePatterns": [
       "<rootDir>/node_modules/?!(.*)"
     ]
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16"
   },
   "dependencies": {
     "unified": "~11.0.0",
@@ -55,7 +58,6 @@
     "remark-gfm": "~4.0.0",
     "remark-parse": "~11.0.0",
     "remark-rehype": "~11.0.0",
-    "tsc-esm-fix": "~2.20.0",
-    "tsbb": "^4.0.5"
+    "tsbb": "^4.2.3"
   }
 }
