@@ -6,7 +6,6 @@ rehype-attr
 [![NPM version](https://img.shields.io/npm/v/rehype-attr.svg?style=flat)](https://npmjs.org/package/rehype-attr)
 [![Build](https://github.com/jaywcjlove/rehype-attr/actions/workflows/ci.yml/badge.svg)](https://github.com/jaywcjlove/rehype-attr/actions/workflows/ci.yml)
 [![Coverage Status](https://jaywcjlove.github.io/rehype-attr/badges.svg)](https://jaywcjlove.github.io/rehype-attr/lcov-report/)
-[![npm bundle size](https://img.shields.io/bundlephobia/minzip/rehype-attr)](https://bundlephobia.com/result?p=rehype-attr)
 [![Repo Dependents](https://badgen.net/github/dependents-repo/jaywcjlove/rehype-attr)](https://github.com/jaywcjlove/rehype-attr/network/dependents)
 
 New syntax to add attributes to Markdown. `rehype-attr` like [`remark-attr`](https://github.com/arobase-che/remark-attr)
