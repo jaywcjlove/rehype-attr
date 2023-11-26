@@ -3,6 +3,7 @@
   "version": "3.0.2",
   "description": "New syntax to add attributes to Markdown.",
   "homepage": "https://jaywcjlove.github.io/rehype-attr",
+  "funding": "https://jaywcjlove.github.io/#/sponsor",
   "author": "Kenny Wong <wowohoo@qq.com>",
   "license": "MIT",
   "sideEffects": false,
