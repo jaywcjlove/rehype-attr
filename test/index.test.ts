@@ -37,13 +37,18 @@ describe('rehype-attr type raw test case', () => {
         expect(htmlStr).toEqual(data.expected);
     });
   });
-
 })
 
 describe('rehype-attr function test case', () => {
   it('getCommentObject', async () => {
     expect(utils.getCommentObject({} as Comment)).toEqual({ });
-    expect(utils.getCommentObject({ value: 'rehype:title=Rehype Attrs' } as Comment)).toEqual({ title: 'Rehype Attrs' });
+    expect(utils.getCommentObject({ value: '<!--rehype:title=Rehype Attrs-->' } as Comment)).toEqual({ title: 'Rehype Attrs' });
+    expect(utils.getCommentObject({ value: '{*rehype:title=Rehype Attrs*}' } as Comment)).toEqual({ "{*rehype:title": "Rehype Attrs*}" });
+    const commentStart: string = "\\{\\*", commentEnd: string = "\\*\\}";
+    expect(utils.getCommentObject({ value: '{*rehype:title=Rehype Attrs*}' } as Comment, commentStart, commentEnd)).toEqual({ title: 'Rehype Attrs' });
+    expect(utils.getCommentObject({ value: '{*rehype:title=Rehype Attrs*} hello world {* hi *}' } as Comment, commentStart, commentEnd)).toEqual({ title: 'Rehype Attrs' });
+    expect(utils.getCommentObject({ value: '{*rehype:title=Rehype Attrs--> hello world }' } as Comment, commentStart, commentEnd)).toEqual({ "{*rehype:title": "Rehype Attrs--> hello world }" });
+    expect(utils.getCommentObject({ value: 'rehype:title=title3' } as Comment)).toEqual({ title: "title3" });
   });
   it('prevChild', async () => {
     expect(utils.prevChild(undefined, 0)).toBeUndefined()
@@ -142,8 +147,8 @@ describe('rehype-attr test case', () => {
   });
 
   it('options="string" - Multiple value settings', async () => {
-    const markdown = "<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('')\n```\n\n```js\nconsole.log('')\n```\n<!--rehype:title=Rehype Attrs Sub-->\n```js\nconsole.log('')\n```\n"
-    const expected = `<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" data-config="{&#x22;title&#x22;:&#x22;Rehype Attrs&#x22;,&#x22;rehyp&#x22;:true}">console.log('')\n</code></pre>\n<pre><code class="language-js">console.log('')\n</code></pre>\n<!--rehype:title=Rehype Attrs Sub-->\n<pre data-type="rehyp"><code class="language-js" data-config="{&#x22;title&#x22;:&#x22;Rehype Attrs Sub&#x22;,&#x22;rehyp&#x22;:true}">console.log('')\n</code></pre>`
+    const markdown = "<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log('1')\n```\n\n```js\nconsole.log('2')\n```\n\n<!--rehype:title=Rehype Attrs Sub-->\n```js\nconsole.log('3')\n```\n"
+    const expected = `<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" data-config="{&#x22;title&#x22;:&#x22;Rehype Attrs&#x22;,&#x22;rehyp&#x22;:true}">console.log('1')\n</code></pre>\n<pre data-config="{&#x22;title&#x22;:&#x22;Rehype Attrs Sub&#x22;,&#x22;rehyp&#x22;:true}"><code class="language-js">console.log('2')\n</code></pre>\n<!--rehype:title=Rehype Attrs Sub-->\n<pre data-type="rehyp"><code class="language-js" data-config="{&#x22;title&#x22;:&#x22;Rehype Attrs Sub&#x22;,&#x22;rehyp&#x22;:true}">console.log('3')\n</code></pre>`
     const htmlStr = unified()
       .use(remarkParse)
       .use(remark2rehype, { allowDangerousHtml: true })
@@ -239,7 +244,7 @@ describe('rehype-attr test case', () => {
     {
       title: 'options="attr" - Code - 1',
       markdown: 'test\n<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log("")\n```',
-      expected: '<p>test</p>\n<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log("")\n</code></pre>',
+      expected: '<p title="Rehype Attrs">test</p>\n<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log("")\n</code></pre>',
     },
     {
       title: 'options="attr" - Code - 2',
@@ -249,7 +254,7 @@ describe('rehype-attr test case', () => {
     {
       title: 'options="attr" - Code - 3',
       markdown: 'test\n\n<!--rehype:title=Rehype Attrs-->\n```js\nconsole.log("")\n```',
-      expected: '<p>test</p>\n<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log("")\n</code></pre>',
+      expected: '<p title="Rehype Attrs">test</p>\n<!--rehype:title=Rehype Attrs-->\n<pre data-type="rehyp"><code class="language-js" title="Rehype Attrs">console.log("")\n</code></pre>',
     },
     {
       title: 'options="attr" - Emphasis <em>',
@@ -443,6 +448,28 @@ describe('rehype-attr test case', () => {
       const htmlStr = rehype()
         .data('settings', { fragment: true })
         .use(rehypeAttrs, { properties: 'attr' })
+        .processSync(data.markdown)
+        .toString()
+        expect(htmlStr).toEqual(data.expected);
+    });
+  });
+
+  [
+    {
+      title: 'options="attr" - <p>',
+      markdown: '<p class="hello">text</p>{*rehype:className=text*}',
+      expected: '<p class="text">text</p>{*rehype:className=text*}',
+    },
+    {
+      title: 'options="attr" - <p>',
+      markdown: '<p class="hello">text</p>{*rehype:className=text*} hello',
+      expected: '<p class="text">text</p>{*rehype:className=text*} hello',
+    }
+  ].forEach((data, idx) => {
+    it(data.title, async () => {
+      const htmlStr = rehype()
+        .data('settings', { fragment: true })
+        .use(rehypeAttrs, { properties: 'attr', commentStart: '\\{\\*', commentEnd: '\\*\\}' })
         .processSync(data.markdown)
         .toString()
         expect(htmlStr).toEqual(data.expected);

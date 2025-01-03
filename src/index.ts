@@ -46,10 +46,20 @@ export type RehypeAttrsOptions = {
    * Code block passing parameters
    */
   codeBlockParames?: boolean;
+  /** 
+   * Optional start delimiter for comments @example `\\{\\*`
+   * @default `<!--`
+   */
+  commentStart?: string;
+  /**
+   * Optional end delimiter for comments @example `\\*\\}` 
+   * @default `-->`
+   */
+  commentEnd?: string;
 }
 
 const rehypeAttrs: Plugin<[RehypeAttrsOptions?], Root> = (options = {}) => {
-  const { properties = 'data', codeBlockParames = true } = options;
+  const { properties = 'data', codeBlockParames = true, commentStart = "<!--", commentEnd = "-->" } = options;
   return (tree) => {
     visit(tree, 'element', (node, index, parent) => {
       if (codeBlockParames && node.tagName === 'pre' && node && Array.isArray(node.children) && parent && Array.isArray(parent.children) && parent.children.length > 1) {
@@ -57,7 +67,7 @@ const rehypeAttrs: Plugin<[RehypeAttrsOptions?], Root> = (options = {}) => {
         if (firstChild && firstChild.tagName === 'code' && typeof index === 'number') {
           const child = prevChild(parent.children as Literal[], index);
           if (child) {
-            const attr = getCommentObject(child);
+            const attr = getCommentObject(child, commentStart, commentEnd);
             if (Object.keys(attr).length > 0) {
               node.properties = { ...node.properties, ...{ 'data-type': 'rehyp' } }
               firstChild.properties = propertiesHandle(firstChild.properties, attr, properties) as Properties
@@ -65,11 +75,11 @@ const rehypeAttrs: Plugin<[RehypeAttrsOptions?], Root> = (options = {}) => {
           }
         }
       }
-
-      if (/^(em|strong|b|a|i|p|pre|kbd|blockquote|h(1|2|3|4|5|6)|code|table|img|del|ul|ol)$/.test(node.tagName) && parent && Array.isArray(parent.children) && typeof index === 'number') {
-        const child = nextChild(parent.children, index, '', codeBlockParames)
+      let rootnode = parent as Root
+      if ((/^(em|strong|b|a|i|p|pre|kbd|blockquote|h(1|2|3|4|5|6)|code|table|img|del|ul|ol)$/.test(node.tagName) || rootnode.type == "root") && parent && Array.isArray(parent.children) && typeof index === 'number') {
+        const child = nextChild(parent.children, index, '', codeBlockParames, commentStart, commentEnd)
         if (child) {
-          const attr = getCommentObject(child as Comment)
+          const attr = getCommentObject(child as Comment, commentStart, commentEnd)
           if (Object.keys(attr).length > 0) {
             node.properties = propertiesHandle(node.properties, attr, properties) as Properties
           }

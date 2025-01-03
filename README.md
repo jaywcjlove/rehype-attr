@@ -312,6 +312,18 @@ Code block passing parameters
 
 > Default Value: `true`  
 
+### `commentStart`
+
+Optional start delimiter for comments @example `\\{\\*`
+
+> Default Value: `<!--`  
+
+### `commentEnd`
+
+Optional end delimiter for comments @example `\\*\\}`
+
+>  Default Value: `-->`  
+
 ## Related
 
 - [`rehype-video`](https://github.com/jaywcjlove/rehype-video) Add improved video syntax: links to `.mp4` and `.mov` turn into videos.

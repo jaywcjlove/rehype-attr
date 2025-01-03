@@ -22,7 +22,7 @@ export const prevChild = (data: Literal[] = [], index: number): Comment | undefi
   return;
 }
 
-export const nextChild = (data: RootContent[] | ElementContent[] = [], index: number, tagName?: string, codeBlockParames?: boolean): ElementContent | undefined => {
+export const nextChild = (data: RootContent[] | ElementContent[] = [], index: number, tagName?: string, codeBlockParames?: boolean, commentStart: string = "<!--", commentEnd: string = "-->"): ElementContent | undefined => {
   let i = index;
   while (i < data.length) {
     i++;
@@ -34,18 +34,23 @@ export const nextChild = (data: RootContent[] | ElementContent[] = [], index: nu
     } else {
       const element = data[i] as ElementContent & Literal;
       if (!element || element.type === 'element') return;
-      if (element.type === 'text' && element.value.replace(/(\n|\s)/g, '') !== '') return;
-      if (element.type && /^(comment|raw)$/ig.test(element.type)) {
-        if (element.value && !/^rehype:/.test(element.value.replace(/^(\s+)?<!--(.*?)-->/, '$2') || '')) {
+      if (element.type === 'text') {
+        const nextNode = nextChild(data, i, undefined, false)
+        if (nextNode) return nextNode;
+      };
+      if (element.type && /^(comment|raw|text)$/ig.test(element.type)) {
+        const regx = new RegExp(`^(\s+)?${commentStart}(.*?)${commentEnd}`);
+        if (element.value && !/^rehype:/.test(element.value.replace(/^(\n|\s)+/, '').replace(regx, '$2') || '')) {
           return
         };
+        let comment = element.value.replace(/^(\n|\s)+/, '');
         if (codeBlockParames) {
           const nextNode = nextChild(data, i, 'pre', codeBlockParames)
           if (nextNode) return;
-          element.value = (element.value || '').replace(/^(\n|\s)+/, '')
+          element.value = comment
           return element;
         } else {
-          element.value = (element.value || '').replace(/^(\n|\s)+/, '')
+          element.value = comment
           return element;
         }
       }
@@ -55,24 +60,37 @@ export const nextChild = (data: RootContent[] | ElementContent[] = [], index: nu
 }
 
 /**
- * 获取代码注视的位置
- * @param data 数据
- * @param index 当前数据所在的位置
- * @returns 返回 当前参数数据 Object，`{}`
+ * Get the position of the code comment
+ * @param data Comment
+ * @param start
+ * @param end
+ * @returns Returns the current parameter data Object, `{}`
  */
-export const getCommentObject = ({ value = '' }: Comment): Properties => {
-  const param = getURLParameters(value.replace(/^<!--(.*?)-->/, '$1').replace(/^rehype:/, ''));
+export const getCommentObject = ({ value = '' }: Comment, start: string = "<!--", end: string = "-->"): Properties => {
+  let regx: RegExp;
+  try {
+    // Construct a regular expression to match the comment content
+    regx = new RegExp(`^${start}(.*?)${end}`);
+  } catch (error) {
+    return {};
+  }
+  const match = value.match(regx);
+  const content = (match ? match[1] : value)
+  // Extract the comment content if it matches the regular expression
+  const commentContent = content.replace(/^rehype:/, '');
+  // Extract the comment content and parse it into a parameter object
+  const param = getURLParameters(commentContent);
+  // Iterate over the key-value pairs of the parameter object and perform type conversion
   Object.keys(param).forEach((keyName: string) => {
     if (param[keyName] === 'true') {
       param[keyName] = true;
-    }
-    if (param[keyName] === 'false') {
+    } else if (param[keyName] === 'false') {
       param[keyName] = false;
-    }
-    if (typeof param[keyName] === 'string' && !/^0/.test(param[keyName] as string) && !isNaN(+param[keyName])) {
+    } else if (typeof param[keyName] === 'string' && !/^0/.test(param[keyName] as string) && !isNaN(+param[keyName])) {
       param[keyName] = +param[keyName];
     }
-  })
+  });
+  // Return the processed parameter object
   return param;
 }
 
