@@ -22,7 +22,7 @@ export const prevChild = (data: Literal[] = [], index: number): Comment | undefi
   return;
 }
 
-export const nextChild = (data: RootContent[] | ElementContent[] = [], index: number, tagName?: string, codeBlockParames?: boolean, commentStart: string = "<!--", commentEnd: string = "-->"): ElementContent | undefined => {
+export const nextChild = (data: RootContent[] | ElementContent[] = [], index: number, tagName?: string, commentStart: string = "<!--", commentEnd: string = "-->"): ElementContent | undefined => {
   let i = index;
   while (i < data.length) {
     i++;
@@ -35,7 +35,7 @@ export const nextChild = (data: RootContent[] | ElementContent[] = [], index: nu
       const element = data[i] as ElementContent & Literal;
       if (!element || element.type === 'element') return;
       if (element.type === 'text') {
-        const nextNode = nextChild(data, i, undefined, false)
+        const nextNode = nextChild(data, i, undefined)
         if (nextNode) return nextNode;
       };
       if (element.type && /^(comment|raw|text)$/ig.test(element.type)) {
@@ -44,15 +44,8 @@ export const nextChild = (data: RootContent[] | ElementContent[] = [], index: nu
           return
         };
         let comment = element.value.replace(/^(\n|\s)+/, '');
-        if (codeBlockParames) {
-          const nextNode = nextChild(data, i, 'pre', codeBlockParames)
-          if (nextNode) return;
-          element.value = comment
-          return element;
-        } else {
-          element.value = comment
-          return element;
-        }
+        element.value = comment
+        return element;
       }
     }
   }

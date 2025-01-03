@@ -1,4 +1,4 @@
-import { unified, Plugin } from 'unified';
+import { unified } from 'unified';
 import { Comment, Literal, ElementContent } from 'hast';
 import { rehype } from 'rehype';
 import gfm from 'remark-gfm';
@@ -48,6 +48,7 @@ describe('rehype-attr function test case', () => {
     expect(utils.getCommentObject({ value: '{*rehype:title=Rehype Attrs*}' } as Comment, commentStart, commentEnd)).toEqual({ title: 'Rehype Attrs' });
     expect(utils.getCommentObject({ value: '{*rehype:title=Rehype Attrs*} hello world {* hi *}' } as Comment, commentStart, commentEnd)).toEqual({ title: 'Rehype Attrs' });
     expect(utils.getCommentObject({ value: '{*rehype:title=Rehype Attrs--> hello world }' } as Comment, commentStart, commentEnd)).toEqual({ "{*rehype:title": "Rehype Attrs--> hello world }" });
+    expect(utils.getCommentObject({ value: '{*rehype:title=Rehype Attrs*}' } as Comment, "[", "[")).toEqual({});
     expect(utils.getCommentObject({ value: 'rehype:title=title3' } as Comment)).toEqual({ title: "title3" });
   });
   it('prevChild', async () => {
@@ -64,6 +65,9 @@ describe('rehype-attr function test case', () => {
     expect(utils.nextChild([ { type: 'text' }, { type: 'comment', value: 'rehype:title=Rehype Attrs' } ] as ElementContent[], 0)).toEqual({ type: "comment", value: "rehype:title=Rehype Attrs" })
     expect(utils.nextChild([ { type: 'text', value: '\n' }, { type: 'comment', value: 'rehype:title=Rehype Attrs' } ], 0)).toEqual({ type: "comment", value: "rehype:title=Rehype Attrs" })
     expect(utils.nextChild([ { type: 'text', value: '\n' }, { type: 'text', value: '' }, { type: 'element', tagName: 'pre' } ] as ElementContent[], 0, 'pre')).toEqual({ type: 'element', tagName: 'pre' })
+    expect(utils.nextChild([ { type: 'element', tagName: 'pre' }, { type: 'comment', tagName: 'rehype:title=Rehype' } ] as ElementContent[], 0, 'pre')).toBeUndefined()
+    expect(utils.nextChild([ { type: 'comment', tagName: 'rehype:title=Rehype' }, { type: 'element', tagName: 'pre' } ] as ElementContent[], 0, 'pre')).toEqual({ type: 'element', tagName: 'pre' })
+    expect(utils.nextChild([ { type: 'comment', tagName: 'rehype:title=Rehype' }, { type: 'element', tagName: 'pre' } ] as ElementContent[], 0, undefined)).toBeUndefined()
   });
   it('propertiesHandle', async () => {
     expect(utils.propertiesHandle({}, {})).toEqual({
@@ -101,6 +105,23 @@ describe('rehype-attr test case', () => {
       .use(rehypeAttrs, {
         properties: 'attr',
         codeBlockParames: false
+      })
+      .use(stringify)
+      .processSync(mrkStr2)
+      .toString()
+      expect(htmlStr).toEqual(expected);
+  });
+
+  it('default codeBlockParames=true', async () => {
+    const mrkStr2 = "### title\n<!--rehype:title=title3-->\n```js\nconsole.log('')\n```"
+    const expected = `<h3 title="title3">title</h3>\n<!--rehype:title=title3-->\n<pre data-type="rehyp"><code class="language-js" title="title3">console.log('')\n</code></pre>`
+    const htmlStr = unified()
+      .use(remarkParse)
+      .use(remark2rehype, { allowDangerousHtml: true })
+      .use(rehypeRaw)
+      .use(rehypeAttrs, {
+        properties: 'attr',
+        codeBlockParames: true
       })
       .use(stringify)
       .processSync(mrkStr2)
@@ -441,10 +462,6 @@ describe('rehype-attr test case', () => {
     }
   ].forEach((data, idx) => {
     it(data.title, async () => {
-      const pluginWithoutOptions: Plugin<void[]> =  (options) => {
-        // expectType<void>(options)
-      }
-
       const htmlStr = rehype()
         .data('settings', { fragment: true })
         .use(rehypeAttrs, { properties: 'attr' })
@@ -474,7 +491,7 @@ describe('rehype-attr test case', () => {
         .toString()
         expect(htmlStr).toEqual(data.expected);
     });
-  })
+  });
 
 });
 
