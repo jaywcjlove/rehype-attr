@@ -76,7 +76,7 @@ const rehypeAttrs: Plugin<[RehypeAttrsOptions?], Root> = (options = {}) => {
         }
       }
       let rootnode = parent as Root
-      if ((/^(em|strong|b|a|i|p|pre|kbd|blockquote|h(1|2|3|4|5|6)|code|table|img|del|ul|ol)$/.test(node.tagName) || rootnode.type == "root") && parent && Array.isArray(parent.children) && typeof index === 'number') {
+      if ((/^(em|strong|b|a|i|p|pre|kbd|blockquote|h(1|2|3|4|5|6)|code|table|img|del|ul|ol|li)$/.test(node.tagName) || rootnode.type == "root") && parent && Array.isArray(parent.children) && typeof index === 'number') {
         const child = nextChild(parent.children, index, '', commentStart, commentEnd)
         if (child) {
           const attr = getCommentObject(child as Comment, commentStart, commentEnd)
