@@ -8,7 +8,7 @@ rehype-attr
 [![Coverage Status](https://jaywcjlove.github.io/rehype-attr/badges.svg)](https://jaywcjlove.github.io/rehype-attr/lcov-report/)
 [![Repo Dependents](https://badgen.net/github/dependents-repo/jaywcjlove/rehype-attr)](https://github.com/jaywcjlove/rehype-attr/network/dependents)
 
-New syntax to add attributes to Markdown. `rehype-attr` like [`remark-attr`](https://github.com/arobase-che/remark-attr)
+This plugin adds support for custom attributes in Markdown. Attributes can be added using HTML comment syntax, but they won’t appear in the preview, similar to [`remark-attr`](https://github.com/arobase-che/remark-attr).
 
 ## Installation
 
