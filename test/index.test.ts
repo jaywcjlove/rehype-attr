@@ -368,6 +368,11 @@ describe('rehype-attr test case', () => {
       markdown: '#### This is a title\n<!--rehype:className=test test2-->',
       expected: '<h4 class="test test2">This is a title</h4>\n<!--rehype:className=test test2-->',
     },
+    {
+      title: 'options="attr" - <li> `- list 1111`',
+      markdown: '- hello<!--rehype:data-testid=1111-->\n- world<!--rehype:data-testid=2222-->',
+      expected: '<ul>\n<li data-testid="1111">hello<!--rehype:data-testid=1111--></li>\n<li data-testid="2222">world<!--rehype:data-testid=2222--></li>\n</ul>',
+    },
   ].forEach((data, idx) => {
     it(data.title, async () => {
       const htmlStr = unified()
@@ -449,6 +454,11 @@ describe('rehype-attr test case', () => {
       title: 'options="attr" - <blockquote>',
       markdown: '<blockquote>content</blockquote><!--rehype:style=color:pink;-->',
       expected: '<blockquote style="color:pink;">content</blockquote><!--rehype:style=color:pink;-->',
+    },
+    {
+      title: 'options="attr" - <li> `- list`',
+      markdown: '<ul>\n<li>hello world!</li><!--rehype:data-testid=111-->\n</ul>',
+      expected: '<ul>\n<li data-testid="111">hello world!</li><!--rehype:data-testid=111-->\n</ul>',
     },
     {
       title: 'options="attr" - <ol>',

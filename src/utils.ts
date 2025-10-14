@@ -26,13 +26,12 @@ export const nextChild = (data: RootContent[] | ElementContent[] = [], index: nu
   let i = index;
   while (i < data.length) {
     i++;
+    const element = data[i] as Literal & Element;
     if (tagName) {
-      const element = data[i] as Literal & Element;
       if (element && element.value && (element.value as string).replace(/(\n|\s)/g, '') !== '' || data[i] && (data[i].type as string) === 'element') {
         return element.tagName === tagName ? element : undefined
       }
     } else {
-      const element = data[i] as ElementContent & Literal;
       if (!element || element.type === 'element') return;
       if (element.type === 'text') {
         const nextNode = nextChild(data, i, undefined)

@@ -1,5 +1,5 @@
 import type { Plugin } from 'unified';
-import type { Root, Element, Comment, Properties, Literal } from 'hast';
+import type { Root, Element, Comment, Properties, Literal, RootContent, ElementContent } from 'hast';
 import { visit } from 'unist-util-visit';
 import { propertiesHandle, nextChild, prevChild, getCommentObject } from './utils.js';
 
@@ -76,18 +76,36 @@ const rehypeAttrs: Plugin<[RehypeAttrsOptions?], Root> = (options = {}) => {
         }
       }
       let rootnode = parent as Root
-      if ((/^(em|strong|b|a|i|p|pre|kbd|blockquote|h(1|2|3|4|5|6)|code|table|img|del|ul|ol|li)$/.test(node.tagName) || rootnode.type == "root") && parent && Array.isArray(parent.children) && typeof index === 'number') {
-        const child = nextChild(parent.children, index, '', commentStart, commentEnd)
-        if (child) {
-          const attr = getCommentObject(child as Comment, commentStart, commentEnd)
-          if (Object.keys(attr).length > 0) {
-            node.properties = propertiesHandle(node.properties, attr, properties) as Properties
-          }
+      let testTagName = /^(em|strong|b|a|i|p|pre|kbd|blockquote|h(1|2|3|4|5|6)|code|table|img|del|ul|ol|li)$/.test(node.tagName)
+      if ((testTagName || rootnode.type == "root") && parent && Array.isArray(parent.children) && typeof index === 'number') {
+        addPropertyToNode(node, parent.children, index, properties, commentStart, commentEnd)
+        if (node.tagName == "ul") {
+          node.children.forEach((li, _) => {
+            if (li.type == "element" && li.tagName == "li") {
+              addPropertyToNode(li, li.children, 0, properties, commentStart, commentEnd)
+            }
+          })
         }
       }
     });
   }
 }
 
+function addPropertyToNode(
+  node: Element, 
+  children: RootContent[] | ElementContent[] = [], 
+  index: number, 
+  properties: RehypeAttrsOptions['properties'], 
+  commentStart = "<!--", 
+  commentEnd = "-->"
+) {
+  const child = nextChild(children, index, "", commentStart, commentEnd)
+  if (child) {
+    const attr = getCommentObject(child as Comment, commentStart, commentEnd)
+    if (Object.keys(attr).length > 0) {
+      node.properties = propertiesHandle(node.properties, attr, properties) as Properties
+    }
+  }
+}
 
 export default rehypeAttrs
