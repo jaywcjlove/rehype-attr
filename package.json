@@ -1,6 +1,6 @@
 {
   "name": "rehype-attr",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "New syntax to add attributes to Markdown.",
   "homepage": "https://jaywcjlove.github.io/rehype-attr",
   "funding": "https://jaywcjlove.github.io/#/sponsor",
