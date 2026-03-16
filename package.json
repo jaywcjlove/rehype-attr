@@ -1,6 +1,6 @@
 {
   "name": "rehype-attr",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "New syntax to add attributes to Markdown.",
   "homepage": "https://jaywcjlove.github.io/rehype-attr",
   "funding": "https://jaywcjlove.github.io/#/sponsor",
@@ -38,7 +38,9 @@
     "unified"
   ],
   "jest": {
-    "extensionsToTreatAsEsm": [".ts"],
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1"
     },
@@ -51,9 +53,10 @@
   },
   "dependencies": {
     "unified": "~11.0.0",
-    "unist-util-visit": "~5.0.0"
+    "unist-util-visit": "~5.1.0"
   },
   "devDependencies": {
+    "baseline-browser-mapping": "^2.10.8",
     "rehype": "~13.0.0",
     "rehype-raw": "~7.0.0",
     "rehype-stringify": "~10.0.0",
