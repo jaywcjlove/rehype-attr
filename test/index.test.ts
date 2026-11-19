@@ -51,6 +51,67 @@ describe('rehype-attr function test case', () => {
     expect(utils.getCommentObject({ value: '{*rehype:title=Rehype Attrs*}' } as Comment, "[", "[")).toEqual({});
     expect(utils.getCommentObject({ value: 'rehype:title=title3' } as Comment)).toEqual({ title: "title3" });
   });
+  it('getCommentObject coerces only finite numbers that round-trip', () => {
+    const cases: Array<{ raw: string; key: string; expected: string | number | boolean }> = [
+      { raw: 'title=', key: 'title', expected: '' },
+      { raw: 'title= ', key: 'title', expected: ' ' },
+      { raw: 'title=   ', key: 'title', expected: '   ' },
+      { raw: 'title=\t', key: 'title', expected: '\t' },
+      { raw: 'data-version=1.10', key: 'data-version', expected: '1.10' },
+      { raw: 'data-version=0.10', key: 'data-version', expected: '0.10' },
+      { raw: 'data-version=1.0', key: 'data-version', expected: '1.0' },
+      { raw: 'data-version=0.0', key: 'data-version', expected: '0.0' },
+      { raw: 'data-version=1.', key: 'data-version', expected: '1.' },
+      { raw: 'data-version=.5', key: 'data-version', expected: '.5' },
+      { raw: 'data-version=1.5', key: 'data-version', expected: 1.5 },
+      { raw: 'data-version=-1.50', key: 'data-version', expected: '-1.50' },
+      { raw: 'data-id=12345678901234567890', key: 'data-id', expected: '12345678901234567890' },
+      { raw: 'data-id=9007199254740993', key: 'data-id', expected: '9007199254740993' },
+      { raw: 'data-id=9007199254740992', key: 'data-id', expected: 9007199254740992 },
+      { raw: 'data-id=9007199254740991', key: 'data-id', expected: 9007199254740991 },
+      { raw: 'title=1e3', key: 'title', expected: '1e3' },
+      { raw: 'title=1E3', key: 'title', expected: '1E3' },
+      { raw: 'title=1e0', key: 'title', expected: '1e0' },
+      { raw: 'title=0e0', key: 'title', expected: '0e0' },
+      { raw: 'title=1e-7', key: 'title', expected: 1e-7 },
+      { raw: 'title=1e+21', key: 'title', expected: 1e+21 },
+      { raw: 'data-x=+5', key: 'data-x', expected: '+5' },
+      { raw: 'data-x=+1.5', key: 'data-x', expected: '+1.5' },
+      { raw: 'data-x=+0', key: 'data-x', expected: '+0' },
+      { raw: 'data-x=-0', key: 'data-x', expected: '-0' },
+      { raw: 'data-x=-5', key: 'data-x', expected: -5 },
+      { raw: 'data-x=0', key: 'data-x', expected: 0 },
+      { raw: 'data-x=0.5', key: 'data-x', expected: 0.5 },
+      { raw: 'data-x=213', key: 'data-x', expected: 213 },
+      { raw: 'data-x=0213', key: 'data-x', expected: '0213' },
+      { raw: 'data-x=08', key: 'data-x', expected: '08' },
+      { raw: 'data-x=00', key: 'data-x', expected: '00' },
+      { raw: 'data-x= 5', key: 'data-x', expected: ' 5' },
+      { raw: 'data-x=5 ', key: 'data-x', expected: '5 ' },
+      { raw: 'data-hex=0x10', key: 'data-hex', expected: '0x10' },
+      { raw: 'data-hex=0o10', key: 'data-hex', expected: '0o10' },
+      { raw: 'data-hex=0b10', key: 'data-hex', expected: '0b10' },
+      { raw: 'data-n=1_000', key: 'data-n', expected: '1_000' },
+      { raw: 'title=Infinity', key: 'title', expected: 'Infinity' },
+      { raw: 'title=-Infinity', key: 'title', expected: '-Infinity' },
+      { raw: 'title=NaN', key: 'title', expected: 'NaN' },
+      { raw: 'title=１', key: 'title', expected: '１' },
+      { raw: 'data-bool=true', key: 'data-bool', expected: true },
+      { raw: 'data-bool=false', key: 'data-bool', expected: false },
+      { raw: 'data-bool=TRUE', key: 'data-bool', expected: 'TRUE' },
+      { raw: 'data-bool=False', key: 'data-bool', expected: 'False' },
+    ];
+    cases.forEach(({ raw, key, expected }) => {
+      const result = utils.getCommentObject({ value: `<!--rehype:${raw}-->` } as Comment);
+      expect(result).toEqual({ [key]: expected });
+      expect(typeof result[key]).toBe(typeof expected);
+    });
+    expect(utils.getCommentObject({ value: '<!--rehype:title=&data-num=213&data-version=1.10-->' } as Comment)).toEqual({
+      title: '',
+      'data-num': 213,
+      'data-version': '1.10',
+    });
+  });
   it('prevChild', async () => {
     expect(utils.prevChild(undefined, 0)).toBeUndefined()
     expect(utils.prevChild(undefined, -1)).toBeUndefined()
@@ -185,11 +246,39 @@ describe('rehype-attr test case', () => {
     {
       title: 'options="attr" - Table',
       markdown: '| Property | Description |\n |---- |---- |\n | 1 | 2 |\n\n<!--rehype:border=1-->',
-      expected: '<table border="1"><thead><tr><th>Property</th><th>Description</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table>\n<!--rehype:border=1-->',
+      expected: `<table border="1">
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<!--rehype:border=1-->`,
     }, {
       title: 'options="attr" - Table 2 `\\n\\n` ???',
       markdown: '| Property | Description |\n |---- |---- |\n | 1 | 2 |\n<!--rehype:border=1-->',
-      expected: '<table border="1"><thead><tr><th>Property</th><th>Description</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table>\n<!--rehype:border=1-->',
+      expected: `<table border="1">
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<!--rehype:border=1-->`,
     }
   ].forEach((data, idx) => {
     it(data.title, async () => {
@@ -503,5 +592,84 @@ describe('rehype-attr test case', () => {
     });
   });
 
+});
+
+describe('rehype-attr attribute value coercion', () => {
+  const render = (attrs: string, properties: 'attr' | 'string' = 'attr') =>
+    rehype()
+      .data('settings', { fragment: true })
+      .use(rehypeAttrs, { properties })
+      .processSync(`<a href="/x">x</a><!--rehype:${attrs}-->`)
+      .toString();
+
+  [
+    { attrs: 'title=', expected: '<a href="/x" title="">x</a><!--rehype:title=-->' },
+    { attrs: 'title= ', expected: '<a href="/x" title=" ">x</a><!--rehype:title= -->' },
+    { attrs: 'data-version=1.10', expected: '<a href="/x" data-version="1.10">x</a><!--rehype:data-version=1.10-->' },
+    { attrs: 'data-version=0.10', expected: '<a href="/x" data-version="0.10">x</a><!--rehype:data-version=0.10-->' },
+    { attrs: 'data-version=1.0', expected: '<a href="/x" data-version="1.0">x</a><!--rehype:data-version=1.0-->' },
+    { attrs: 'data-id=12345678901234567890', expected: '<a href="/x" data-id="12345678901234567890">x</a><!--rehype:data-id=12345678901234567890-->' },
+    { attrs: 'data-id=9007199254740993', expected: '<a href="/x" data-id="9007199254740993">x</a><!--rehype:data-id=9007199254740993-->' },
+    { attrs: 'title=1e3', expected: '<a href="/x" title="1e3">x</a><!--rehype:title=1e3-->' },
+    { attrs: 'data-x=+5', expected: '<a href="/x" data-x="+5">x</a><!--rehype:data-x=+5-->' },
+    { attrs: 'data-x=-0', expected: '<a href="/x" data-x="-0">x</a><!--rehype:data-x=-0-->' },
+    { attrs: 'title=Infinity', expected: '<a href="/x" title="Infinity">x</a><!--rehype:title=Infinity-->' },
+    { attrs: 'title=-Infinity', expected: '<a href="/x" title="-Infinity">x</a><!--rehype:title=-Infinity-->' },
+    { attrs: 'title=NaN', expected: '<a href="/x" title="NaN">x</a><!--rehype:title=NaN-->' },
+    { attrs: 'data-hex=0x10', expected: '<a href="/x" data-hex="0x10">x</a><!--rehype:data-hex=0x10-->' },
+    { attrs: 'data-n=0213', expected: '<a href="/x" data-n="0213">x</a><!--rehype:data-n=0213-->' },
+    { attrs: 'data-n=213', expected: '<a href="/x" data-n="213">x</a><!--rehype:data-n=213-->' },
+    { attrs: 'data-n=0', expected: '<a href="/x" data-n="0">x</a><!--rehype:data-n=0-->' },
+    { attrs: 'data-n=-5', expected: '<a href="/x" data-n="-5">x</a><!--rehype:data-n=-5-->' },
+    { attrs: 'data-bool=true', expected: '<a href="/x" data-bool>x</a><!--rehype:data-bool=true-->' },
+    { attrs: 'data-bool=false', expected: '<a href="/x">x</a><!--rehype:data-bool=false-->' },
+    {
+      attrs: 'title=&data-version=1.10&data-num=213',
+      expected: '<a href="/x" title="" data-version="1.10" data-num="213">x</a><!--rehype:title=&data-version=1.10&data-num=213-->',
+    },
+  ].forEach(({ attrs, expected }) => {
+    it(`attr mode preserves ${attrs}`, () => {
+      expect(render(attrs)).toEqual(expected);
+    });
+  });
+
+  [
+    {
+      attrs: 'title=',
+      expected: '<a href="/x" data-config="{&#x22;title&#x22;:&#x22;&#x22;,&#x22;rehyp&#x22;:true}">x</a><!--rehype:title=-->',
+    },
+    {
+      attrs: 'title=Infinity',
+      expected: '<a href="/x" data-config="{&#x22;title&#x22;:&#x22;Infinity&#x22;,&#x22;rehyp&#x22;:true}">x</a><!--rehype:title=Infinity-->',
+    },
+    {
+      attrs: 'data-version=1.10',
+      expected: '<a href="/x" data-config="{&#x22;data-version&#x22;:&#x22;1.10&#x22;,&#x22;rehyp&#x22;:true}">x</a><!--rehype:data-version=1.10-->',
+    },
+    {
+      attrs: 'data-id=12345678901234567890',
+      expected: '<a href="/x" data-config="{&#x22;data-id&#x22;:&#x22;12345678901234567890&#x22;,&#x22;rehyp&#x22;:true}">x</a><!--rehype:data-id=12345678901234567890-->',
+    },
+    {
+      attrs: 'title=1e3',
+      expected: '<a href="/x" data-config="{&#x22;title&#x22;:&#x22;1e3&#x22;,&#x22;rehyp&#x22;:true}">x</a><!--rehype:title=1e3-->',
+    },
+    {
+      attrs: 'data-x=+5',
+      expected: '<a href="/x" data-config="{&#x22;data-x&#x22;:&#x22;+5&#x22;,&#x22;rehyp&#x22;:true}">x</a><!--rehype:data-x=+5-->',
+    },
+    {
+      attrs: 'data-num=213',
+      expected: '<a href="/x" data-config="{&#x22;data-num&#x22;:213,&#x22;rehyp&#x22;:true}">x</a><!--rehype:data-num=213-->',
+    },
+    {
+      attrs: 'data-bool=true&data-bool2=false',
+      expected: '<a href="/x" data-config="{&#x22;data-bool&#x22;:true,&#x22;data-bool2&#x22;:false,&#x22;rehyp&#x22;:true}">x</a><!--rehype:data-bool=true&data-bool2=false-->',
+    },
+  ].forEach(({ attrs, expected }) => {
+    it(`string mode preserves ${attrs}`, () => {
+      expect(render(attrs, 'string')).toEqual(expected);
+    });
+  });
 });
 

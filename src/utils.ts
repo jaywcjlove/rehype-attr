@@ -74,12 +74,19 @@ export const getCommentObject = ({ value = '' }: Comment, start: string = "<!--"
   const param = getURLParameters(commentContent);
   // Iterate over the key-value pairs of the parameter object and perform type conversion
   Object.keys(param).forEach((keyName: string) => {
-    if (param[keyName] === 'true') {
+    const raw = param[keyName];
+    if (raw === 'true') {
       param[keyName] = true;
-    } else if (param[keyName] === 'false') {
+    } else if (raw === 'false') {
       param[keyName] = false;
-    } else if (typeof param[keyName] === 'string' && !/^0/.test(param[keyName] as string) && !isNaN(+param[keyName])) {
-      param[keyName] = +param[keyName];
+    } else if (typeof raw === 'string') {
+      const numeric = Number(raw);
+      // Keep the source text unless it is a finite number whose canonical form
+      // is identical. "" becomes 0, and values such as "1.10", "1e3", "+5",
+      // "Infinity", and unsafe integers do not round-trip, so they stay strings.
+      if (Number.isFinite(numeric) && String(numeric) === raw) {
+        param[keyName] = numeric;
+      }
     }
   });
   // Return the processed parameter object
