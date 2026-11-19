@@ -15,7 +15,9 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "outDir": "lib",
-    "baseUrl": "."
+    "rootDir": "src",
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0"
   },
   "include": [
     "src/**/*"
